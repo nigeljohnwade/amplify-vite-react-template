@@ -1,42 +1,210 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* Fonts */
+
+@font-face{
+    font-family: 'tiny-hands';
+    src: url(./resources/BFTinyHand-Regular.otf) format("opentype");
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Base reset */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    min-width: 0;
+    min-height: 0;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+:root{
+    font-size: 16px;
+    --spacer: 1rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* List reset */
+
+ul, ol {
+    list-style-type: none;
 }
 
-.card {
-  padding: 2em;
+/* Form and label reset */
+
+label {
+    display: block;
 }
 
-.read-the-docs {
-  color: #888;
+button{
+    background-color: orange;
+    border-radius: 50%;
+    border: none;
+}
+
+/* Typography */
+
+body, input, button{
+    font-family: "tiny-hands";
+    font-size: 1rem;
+}
+
+h1{
+    font-size: 3.177rem;
+}
+
+h2{
+    font-size: 2.618rem;
+}
+
+h3{
+    font-size: 1.963rem;
+}
+
+h4{
+    font-size: 1.618rem;
+}
+h5{
+    font-size:  1.214rem;
+}
+
+.bigger{
+    font-size: 1.214em;
+}
+
+.smaller{
+    font-size: .75em;
+}
+
+/* Forms */
+
+input[type=radio]{
+    width: 1rem;
+    height: 1rem;
+}
+
+input[type=radio] + input[type=radio]{
+    margin-left: 1rem;
+}
+
+button{
+    padding: 1rem;
+    min-width: 5rem;
+}
+
+.input-group{
+    position: relative;
+    --label-height: 1rem;
+    --input-height: 3rem;
+    --input-padding: 0.75rem;
+    --label-offset: -2.5rem;
+}
+
+.input-group input{
+    height: var(--input-height);
+    padding: var(--input-padding);
+    border-radius: var(--input-padding);
+}
+
+.input-group label{
+    position: absolute;
+    height: var(--label-height);
+    top: var(--input-padding);
+    left: var(--input-padding);
+    transition: top 0.3s ease-in-out;
+    background-color: white;
+}
+
+.input-group input:focus + label{
+    top: var(--label-offset);
+}
+
+.input-group input:not([value=""]) + label{
+    top: var(--label-offset);
+}
+
+.radio-group{
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+/* Application specific */
+
+:root{
+    --jaunty-mild: rotate(-11.25deg);
+    --jaunty-mild-alt: rotate(11.25deg);
+}
+
+header{
+    margin-bottom: 2rem;
+}
+
+.main {
+    width: 100%;
+    max-width: 180ch;
+    margin: 2rem auto;
+}
+
+.board-section {
+    width: 50%;
+    flex-basis: 50%;
+    max-width: calc(60ch - var(--space));
+}
+
+.section-heading {
+    text-transform: capitalize;
+}
+
+.jaunty{
+    transform: var(--jaunty-mild);
+}
+
+.jaunty-alt{
+    transform: var(--jaunty-mild-alt);
+}
+
+/* Layout */
+
+/* Stack classes from, https://every-layout.dev */
+
+.stack {
+    --space: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.stack > * + * {
+    margin-top: var(--space);
+}
+
+/* Row classes, based on stack but horizontal rather than vertical */
+
+.row {
+    --space: 1.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.row  > *{
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.row + .row{
+    margin-top: var(--spacer)
+}
+
+.row > * + * {
+    margin-left: var(--space);
+}
+
+/* Layout utilities */
+
+.flex-filler {
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+.flex-wrap{
+    flex-wrap: wrap;
 }
