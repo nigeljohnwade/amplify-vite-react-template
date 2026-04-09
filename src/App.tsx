@@ -24,10 +24,6 @@ function App() {
         });
     }, []);
 
-    function createTodo() {
-        client.models.Todo.create({title: window.prompt('Todo title')});
-    }
-
     function deleteTodo(id: string) {
         client.models.Todo.delete({id});
     }
