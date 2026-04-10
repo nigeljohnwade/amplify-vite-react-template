@@ -174,8 +174,10 @@ ul.todos-list {
             flex-basis: 20em;
         }
 
-        & :nth-child(2) {
+        & :nth-child(2),
+        & :nth-child(3) {
             flex-basis: 5em;
+            text-transform: capitalize;
         }
     }
 }
@@ -187,6 +189,12 @@ ul.todos-list {
     gap: 0.5rem;
 }
 
-p.todo-category {
+.form-row {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+select[name="priority"] {
     text-transform: capitalize;
 }

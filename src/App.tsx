@@ -15,7 +15,7 @@ function App() {
     const [isUpdating, setIsUpdating] = useState<string | null>(null);
     const [isCreating, setIsCreating] = useState<boolean>(false);
     const {user, signOut} = useAuthenticator();
-
+    const prioritiesEnum = client.enums.TodoPriority.values();
     const categories = [
         {id: 0, value: 'home', displayName: 'Home'},
         {id: 1, value: 'work', displayName: 'Work'},
@@ -37,12 +37,14 @@ function App() {
         const newContent = formData.get('content') as string;
         const newTitle = formData.get('title') as string;
         const newCategory = formData.get('category') as string;
+        const newPriority = formData.get('priority') as any;
         if (isUpdating) {
             client.models.Todo.update({
                 id: isUpdating,
                 content: newContent,
                 title: newTitle,
                 category: newCategory,
+                priority: newPriority,
             });
         }
         setIsUpdating(null);
@@ -54,27 +56,44 @@ function App() {
         const newContent = formData.get('content') as string;
         const newTitle = formData.get('title') as string;
         const newCategory = formData.get('category') as string;
+        const newPriority = formData.get('priority') as any;
         client.models.Todo.create({
             content: newContent,
             title: newTitle,
             category: newCategory,
+            priority: newPriority,
         });
         setIsCreating(false);
     }
 
     return (
         <main className="main">
-            <h1>{user?.signInDetails?.loginId}'s todos <button onClick={signOut}>Sign out</button></h1>
-            <button onClick={() => setIsCreating(true)}>+ Add</button>
+            <h1>{user?.signInDetails?.loginId}'s plans <button onClick={signOut}>Sign out</button></h1>
+            <button
+                onClick={() => {
+                    setIsCreating(true);
+                    setIsUpdating(null);
+                }}
+            >
+                Make a new plan
+            </button>
             {
                 !isCreating && isUpdating === null &&
                 <ul className="todos-list">
                     {todos.map((todo) => (
                         <li key={todo.id}>
                             <p className="todo.title">{todo.title ? todo.title : todo.content ? todo.content.substring(0, 25) : ''}</p>
-                            <p className="todo-category">{todo.category}</p>
+                            <p className="todo-category">{categories.find(category => category.value === todo.category)?.displayName}</p>
+                            <p className="todo-priority">{todo.priority}</p>
                             <div className="button-row">
-                                <button onClick={() => setIsUpdating(todo.id)}>Edit</button>
+                                <button
+                                    onClick={() => {
+                                        setIsUpdating(todo.id);
+                                        setIsCreating(false);
+                                    }}
+                                >
+                                    Edit
+                                </button>
                                 <button onClick={() => deleteTodo(todo.id)}>Delete</button>
                             </div>
                         </li>
@@ -85,8 +104,7 @@ function App() {
                 isUpdating &&
                 <form onSubmit={(e) => updateTodoSubmitHandler(e)}>
                     <Stack>
-
-                        <p>Update {todos.find(todo => todo.id === isUpdating)?.title || 'no title'}</p>
+                        <p>Update plan {todos.find(todo => todo.id === isUpdating)?.title || 'no title'}</p>
                         <InputGroup>
                             <label htmlFor="update-title">Title</label>
                             <input
@@ -105,24 +123,46 @@ function App() {
                                 type="text"
                             />
                         </InputGroup>
-                        <InputGroup>
-                            <label htmlFor="update-category">Category</label>
-                            <select
-                                id="update-category"
-                                name="category"
-                            >
-                                {
-                                    categories.map(category => (
-                                        <option
-                                            key={category.id}
-                                            value={category.value}
-                                        >
-                                            {category.displayName}
-                                        </option>
-                                    ))
-                                }
-                            </select>
-                        </InputGroup>
+                        <div className="form-row">
+
+                            <InputGroup>
+                                <label htmlFor="update-category">Category</label>
+                                <select
+                                    id="update-category"
+                                    name="category"
+                                >
+                                    {
+                                        categories.map(category => (
+                                            <option
+                                                key={category.id}
+                                                value={category.value}
+                                            >
+                                                {category.displayName}
+                                            </option>
+                                        ))
+                                    }
+                                </select>
+                            </InputGroup>
+                            <InputGroup>
+                                <label htmlFor="create-priority">Priority</label>
+                                <select
+                                    id="create-priority"
+                                    name="priority"
+                                    defaultValue={todos.find(todo => todo.id === isUpdating)?.priority || ''}
+                                >
+                                    {
+                                        prioritiesEnum.map(priority => (
+                                            <option
+                                                key={priority}
+                                                value={priority}
+                                            >
+                                                {priority}
+                                            </option>
+                                        ))
+                                    }
+                                </select>
+                            </InputGroup>
+                        </div>
                         <InputGroup>
                             <label htmlFor="update-place">Place</label>
                             <input
@@ -132,7 +172,15 @@ function App() {
                                 type="text"
                             />
                         </InputGroup>
-                        <button>Submit</button>
+                        <div className="button-row">
+                            <button>Submit</button>
+                            <button
+                                type="button"
+                                onClick={() => setIsUpdating(null)}
+                            >
+                                Cancel
+                            </button>
+                        </div>
                     </Stack>
                 </form>
             }
@@ -140,8 +188,7 @@ function App() {
                 isCreating &&
                 <form onSubmit={(e) => createTodoSubmitHandler(e)}>
                     <Stack>
-
-                        <p>Update {todos.find(todo => todo.id === isUpdating)?.title || 'no title'}</p>
+                        <p>Create new plan</p>
                         <InputGroup>
                             <label htmlFor="create-title">Title</label>
                             <input
@@ -160,24 +207,44 @@ function App() {
                                 type="text"
                             />
                         </InputGroup>
-                        <InputGroup>
-                            <label htmlFor="create-category">Category</label>
-                            <select
-                                id="create-category"
-                                name="category"
-                            >
-                                {
-                                    categories.map(category => (
-                                        <option
-                                            key={category.id}
-                                            value={category.value}
-                                        >
-                                            {category.displayName}
-                                        </option>
-                                    ))
-                                }
-                            </select>
-                        </InputGroup>
+                        <div className="form-row">
+                            <InputGroup>
+                                <label htmlFor="create-category">Category</label>
+                                <select
+                                    id="create-category"
+                                    name="category"
+                                >
+                                    {
+                                        categories.map(category => (
+                                            <option
+                                                key={category.id}
+                                                value={category.value}
+                                            >
+                                                {category.displayName}
+                                            </option>
+                                        ))
+                                    }
+                                </select>
+                            </InputGroup>
+                            <InputGroup>
+                                <label htmlFor="create-priority">Priority</label>
+                                <select
+                                    id="create-priority"
+                                    name="priority"
+                                >
+                                    {
+                                        prioritiesEnum.map(priority => (
+                                            <option
+                                                key={priority}
+                                                value={priority}
+                                            >
+                                                {priority}
+                                            </option>
+                                        ))
+                                    }
+                                </select>
+                            </InputGroup>
+                        </div>
                         <InputGroup>
                             <label htmlFor="create-place">Place</label>
                             <input
@@ -187,7 +254,15 @@ function App() {
                                 type="text"
                             />
                         </InputGroup>
-                        <button>Submit</button>
+                        <div className="button-row">
+                            <button>Submit</button>
+                            <button
+                                type="button"
+                                onClick={() => setIsCreating(false)}
+                            >
+                                Cancel
+                            </button>
+                        </div>
                     </Stack>
                 </form>
             }
