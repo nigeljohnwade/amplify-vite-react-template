@@ -1,6 +1,6 @@
 /* Fonts */
 
-@font-face{
+@font-face {
     font-family: 'tiny-hands';
     src: url(./resources/BFTinyHand-Regular.otf) format("opentype");
 }
@@ -15,7 +15,7 @@
     min-height: 0;
 }
 
-:root{
+:root {
     font-size: 16px;
     --spacer: 1rem;
 }
@@ -32,94 +32,60 @@ label {
     display: block;
 }
 
-button{
-    background-color: orange;
-    border-radius: 50%;
-    border: none;
-}
-
 /* Typography */
 
-body, input, button{
-    font-family: "tiny-hands";
+body, input, button, select, textarea {
+    /*font-family: "tiny-hands";*/
+    font-family: sans-serif;
     font-size: 1rem;
 }
 
-h1{
+h1 {
     font-size: 3.177rem;
 }
 
-h2{
+h2 {
     font-size: 2.618rem;
 }
 
-h3{
+h3 {
     font-size: 1.963rem;
 }
 
-h4{
+h4 {
     font-size: 1.618rem;
 }
-h5{
-    font-size:  1.214rem;
+
+h5 {
+    font-size: 1.214rem;
 }
 
-.bigger{
+.bigger {
     font-size: 1.214em;
 }
 
-.smaller{
+.smaller {
     font-size: .75em;
 }
 
 /* Forms */
 
-input[type=radio]{
+input[type=radio] {
     width: 1rem;
     height: 1rem;
 }
 
-input[type=radio] + input[type=radio]{
+input[type=radio] + input[type=radio] {
     margin-left: 1rem;
 }
 
-button{
-    padding: 1rem;
+button {
     min-width: 5rem;
 }
 
-.input-group{
-    position: relative;
-    --label-height: 1rem;
-    --input-height: 3rem;
-    --input-padding: 0.75rem;
-    --label-offset: -2.5rem;
-}
+/* Custom form components */
 
-.input-group input{
-    height: var(--input-height);
-    padding: var(--input-padding);
-    border-radius: var(--input-padding);
-}
-
-.input-group label{
-    position: absolute;
-    height: var(--label-height);
-    top: var(--input-padding);
-    left: var(--input-padding);
-    transition: top 0.3s ease-in-out;
-    background-color: white;
-}
-
-.input-group input:focus + label{
-    top: var(--label-offset);
-}
-
-.input-group input:not([value=""]) + label{
-    top: var(--label-offset);
-}
-
-.radio-group{
+.radio-group {
     height: 100%;
     display: flex;
     align-items: center;
@@ -127,18 +93,18 @@ button{
 
 /* Application specific */
 
-:root{
+:root {
     --jaunty-mild: rotate(-11.25deg);
     --jaunty-mild-alt: rotate(11.25deg);
 }
 
-header{
+header {
     margin-bottom: 2rem;
 }
 
 .main {
     width: 100%;
-    max-width: 180ch;
+    max-width: 60em;
     margin: 2rem auto;
 }
 
@@ -152,27 +118,12 @@ header{
     text-transform: capitalize;
 }
 
-.jaunty{
+.jaunty {
     transform: var(--jaunty-mild);
 }
 
-.jaunty-alt{
+.jaunty-alt {
     transform: var(--jaunty-mild-alt);
-}
-
-/* Layout */
-
-/* Stack classes from, https://every-layout.dev */
-
-.stack {
-    --space: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-}
-
-.stack > * + * {
-    margin-top: var(--space);
 }
 
 /* Row classes, based on stack but horizontal rather than vertical */
@@ -185,12 +136,12 @@ header{
     align-items: center;
 }
 
-.row  > *{
+.row > * {
     flex-grow: 0;
     flex-shrink: 0;
 }
 
-.row + .row{
+.row + .row {
     margin-top: var(--spacer)
 }
 
@@ -205,6 +156,37 @@ header{
     flex-shrink: 1;
 }
 
-.flex-wrap{
+.flex-wrap {
     flex-wrap: wrap;
+}
+
+ul.todos-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    & li {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        & :first-child {
+            flex-basis: 20em;
+        }
+
+        & :nth-child(2) {
+            flex-basis: 5em;
+        }
+    }
+}
+
+.button-row {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+p.todo-category {
+    text-transform: capitalize;
 }

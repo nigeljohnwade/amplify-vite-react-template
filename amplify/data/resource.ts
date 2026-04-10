@@ -1,4 +1,4 @@
-import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
+import { a, type ClientSchema, defineData } from '@aws-amplify/backend';
 
 /*== STEP 1 ===============================================================
 The section below originally created a Todo database table with a "content"
@@ -9,14 +9,27 @@ key can "create", "read","update", and "delete" any "Todo" records.
 This has been changed to restrict actions to the owner.
 =========================================================================*/
 const schema = a.schema({
+    Location: a.customType({
+        lat: a.float(),
+        long: a.float(),
+    }),
     Todo: a
         .model({
             category: a.string(),
             content: a.string(),
             isDone: a.boolean(),
+            location: a.ref('Location'),
+            place: a.string(),
+            priority: a.enum(['high', 'medium', 'low']),
             status: a.string(),
-            title: a.string(),
-        }).authorization(allow => [allow.owner()]),
+            title: a.string().required(),
+        })
+        .authorization(allow => [allow.owner()]),
+    Setting: a
+        .model({
+            theme: a.string(),
+        })
+        .authorization(allow => [allow.owner()]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
