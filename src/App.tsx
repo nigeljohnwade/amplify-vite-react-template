@@ -107,7 +107,7 @@ function App() {
                                     .sort((a, b) => a.category === 'work' && b.category === 'home' ? -1 : 1)
                                     .map((plan) => (
                                         <li key={plan.id}>
-                                            <p className="todo-title">{plan.title ? plan.title : plan.content ? plan.content.substring(0, 25) : ''}</p>
+                                            <p className="todo-title">{plan.title ? plan.title : plan.content ? plan.content.substring(0, 35) : ''}</p>
                                             <p className="todo-category">{categories.find(category => category.value === plan.category)?.displayName}</p>
                                             <p className="todo-priority">{plan.priority}</p>
                                             <p>{plan.date} {plan.time}</p>
@@ -283,7 +283,7 @@ function App() {
                                             <select
                                                 id="create-priority"
                                                 name="priority"
-                                                defaultValue={'medium'}
+                                                defaultValue={''}
                                             >
                                                 <option value={''}>None</option>
                                                 {
