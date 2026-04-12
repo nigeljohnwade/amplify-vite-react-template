@@ -85,40 +85,46 @@ function App() {
         <main className="main">
             <Stack spacing="large">
                 <h1>{user?.signInDetails?.loginId}'s plans <button onClick={signOut}>Sign out</button></h1>
-                <button
-                    onClick={() => {
-                        setIsCreating(true);
-                        setIsUpdating(null);
-                    }}
-                >
-                    Make a new plan
-                </button>
+                <>
+                    {
+                        !isCreating && isUpdating === null &&
+                        <button
+                            onClick={() => {
+                                setIsCreating(true);
+                                setIsUpdating(null);
+                            }}
+                        >
+                            Make a new plan
+                        </button>
+                    }
+                </>
                 <>
                     {
                         !isCreating && isUpdating === null &&
                         <ul className="plan-list">
-                            {plans
-                                .sort((a, b) => a.category === 'work' && b.category === 'home' ? -1 : 1)
-                                .map((plan) => (
-                                    <li key={plan.id}>
-                                        <p className="todo-title">{plan.title ? plan.title : plan.content ? plan.content.substring(0, 25) : ''}</p>
-                                        <p className="todo-category">{categories.find(category => category.value === plan.category)?.displayName}</p>
-                                        <p className="todo-priority">{plan.priority}</p>
-                                        <p>{plan.date} {plan.time}</p>
-                                        <div className="button-row">
-                                            <button
-                                                onClick={() => {
-                                                    setIsUpdating(plan.id);
-                                                    setUpdatingPlan(plan);
-                                                    setIsCreating(false);
-                                                }}
-                                            >
-                                                Edit
-                                            </button>
-                                            <button onClick={() => deletePlan(plan.id)}>Delete</button>
-                                        </div>
-                                    </li>
-                                ))}
+                            {
+                                plans
+                                    .sort((a, b) => a.category === 'work' && b.category === 'home' ? -1 : 1)
+                                    .map((plan) => (
+                                        <li key={plan.id}>
+                                            <p className="todo-title">{plan.title ? plan.title : plan.content ? plan.content.substring(0, 25) : ''}</p>
+                                            <p className="todo-category">{categories.find(category => category.value === plan.category)?.displayName}</p>
+                                            <p className="todo-priority">{plan.priority}</p>
+                                            <p>{plan.date} {plan.time}</p>
+                                            <div className="button-row">
+                                                <button
+                                                    onClick={() => {
+                                                        setIsUpdating(plan.id);
+                                                        setUpdatingPlan(plan);
+                                                        setIsCreating(false);
+                                                    }}
+                                                >
+                                                    Edit
+                                                </button>
+                                                <button onClick={() => deletePlan(plan.id)}>Delete</button>
+                                            </div>
+                                        </li>
+                                    ))}
                         </ul>
                     }
                 </>
