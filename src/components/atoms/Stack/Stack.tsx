@@ -4,11 +4,13 @@ import './Stack.css';
 
 const Stack = ({
     children,
+    spacing = 'medium',
 }: {
     children: ReactElement | ReactElement[],
+    spacing?: 'small' | 'medium' | 'large',
 }) => {
     return (
-        <div className="stack">
+        <div className={['stack', spacing].join(' ')}>
             {children}
         </div>
     );

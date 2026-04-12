@@ -41,21 +41,12 @@ body, input, button, select, textarea {
 }
 
 h1 {
-    font-size: 3.177rem;
-}
-
-h2 {
-    font-size: 2.618rem;
-}
-
-h3 {
-    font-size: 1.963rem;
-}
-
-h4 {
     font-size: 1.618rem;
 }
 
+h2,
+h3,
+h4,
 h5 {
     font-size: 1.214rem;
 }
@@ -68,62 +59,16 @@ h5 {
     font-size: .75em;
 }
 
-/* Forms */
-
-input[type=radio] {
-    width: 1rem;
-    height: 1rem;
-}
-
-input[type=radio] + input[type=radio] {
-    margin-left: 1rem;
-}
-
 button {
     min-width: 5rem;
 }
 
-/* Custom form components */
-
-.radio-group {
-    height: 100%;
-    display: flex;
-    align-items: center;
-}
-
 /* Application specific */
-
-:root {
-    --jaunty-mild: rotate(-11.25deg);
-    --jaunty-mild-alt: rotate(11.25deg);
-}
-
-header {
-    margin-bottom: 2rem;
-}
 
 .main {
     width: 100%;
     max-width: 60em;
     margin: 2rem auto;
-}
-
-.board-section {
-    width: 50%;
-    flex-basis: 50%;
-    max-width: calc(60ch - var(--space));
-}
-
-.section-heading {
-    text-transform: capitalize;
-}
-
-.jaunty {
-    transform: var(--jaunty-mild);
-}
-
-.jaunty-alt {
-    transform: var(--jaunty-mild-alt);
 }
 
 /* Row classes, based on stack but horizontal rather than vertical */
