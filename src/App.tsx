@@ -56,11 +56,11 @@ function App() {
                 id: isUpdating,
                 content: newContent,
                 title: newTitle,
-                category: newCategory,
-                priority: newPriority,
+                category: newCategory !== '' ? newCategory : null,
+                priority: newPriority !== '' ? newPriority : null,
                 place: newPlace,
-                time: newTime,
-                date: newDate,
+                time: newTime !== '' ? newTime : null,
+                date: newDate !== '' ? newDate : null,
             });
         }
         setIsUpdating(null);
@@ -75,8 +75,8 @@ function App() {
             category: newCategory,
             priority: newPriority,
             place: newPlace,
-            time: newTime,
-            date: newDate,
+            time: newTime !== '' ? newTime : null,
+            date: newDate !== '' ? newDate : null,
         });
         setIsCreating(false);
     }
@@ -97,26 +97,28 @@ function App() {
                     {
                         !isCreating && isUpdating === null &&
                         <ul className="plan-list">
-                            {plans.map((plan) => (
-                                <li key={plan.id}>
-                                    <p className="todo-title">{plan.title ? plan.title : plan.content ? plan.content.substring(0, 25) : ''}</p>
-                                    <p className="todo-category">{categories.find(category => category.value === plan.category)?.displayName}</p>
-                                    <p className="todo-priority">{plan.priority}</p>
-                                    <p>{plan.date} {plan.time}</p>
-                                    <div className="button-row">
-                                        <button
-                                            onClick={() => {
-                                                setIsUpdating(plan.id);
-                                                setUpdatingPlan(plan);
-                                                setIsCreating(false);
-                                            }}
-                                        >
-                                            Edit
-                                        </button>
-                                        <button onClick={() => deletePlan(plan.id)}>Delete</button>
-                                    </div>
-                                </li>
-                            ))}
+                            {plans
+                                .sort((a, b) => a.category === 'work' && b.category === 'home' ? -1 : 1)
+                                .map((plan) => (
+                                    <li key={plan.id}>
+                                        <p className="todo-title">{plan.title ? plan.title : plan.content ? plan.content.substring(0, 25) : ''}</p>
+                                        <p className="todo-category">{categories.find(category => category.value === plan.category)?.displayName}</p>
+                                        <p className="todo-priority">{plan.priority}</p>
+                                        <p>{plan.date} {plan.time}</p>
+                                        <div className="button-row">
+                                            <button
+                                                onClick={() => {
+                                                    setIsUpdating(plan.id);
+                                                    setUpdatingPlan(plan);
+                                                    setIsCreating(false);
+                                                }}
+                                            >
+                                                Edit
+                                            </button>
+                                            <button onClick={() => deletePlan(plan.id)}>Delete</button>
+                                        </div>
+                                    </li>
+                                ))}
                         </ul>
                     }
                 </>
@@ -138,11 +140,10 @@ function App() {
                                     </InputGroup>
                                     <InputGroup>
                                         <label htmlFor="update-content">Content</label>
-                                        <input
+                                        <textarea
                                             defaultValue={updatingPlan?.content || ''}
                                             id="update-content"
                                             name="content"
-                                            type="text"
                                         />
                                     </InputGroup>
                                     <div className="form-row">
@@ -151,7 +152,9 @@ function App() {
                                             <select
                                                 id="update-category"
                                                 name="category"
+                                                defaultValue={updatingPlan?.category || ''}
                                             >
+                                                <option value={''}>None</option>
                                                 {
                                                     categories.map(category => (
                                                         <option
@@ -243,11 +246,10 @@ function App() {
                                     </InputGroup>
                                     <InputGroup>
                                         <label htmlFor="create-content">Content</label>
-                                        <input
+                                        <textarea
                                             defaultValue={''}
                                             id="create-content"
                                             name="content"
-                                            type="text"
                                         />
                                     </InputGroup>
                                     <div className="form-row">
@@ -257,6 +259,7 @@ function App() {
                                                 id="create-category"
                                                 name="category"
                                             >
+                                                <option value={''}>None</option>
                                                 {
                                                     categories.map(category => (
                                                         <option
@@ -274,7 +277,9 @@ function App() {
                                             <select
                                                 id="create-priority"
                                                 name="priority"
+                                                defaultValue={'medium'}
                                             >
+                                                <option value={''}>None</option>
                                                 {
                                                     prioritiesEnum.map(priority => (
                                                         <option
