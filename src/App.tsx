@@ -113,74 +113,77 @@ function App() {
                     {
                         isUpdating &&
                         <form onSubmit={(event) => updateTodoSubmitHandler(event)}>
-                            <Stack spacing="small">
+                            <Stack spacing="medium">
+
                                 <h2>Update plan {updatingTodo?.title || 'no title'}</h2>
-                                <InputGroup>
-                                    <label htmlFor="update-title">Title</label>
-                                    <input
-                                        defaultValue={updatingTodo?.title || ''}
-                                        id="update-title"
-                                        name="title"
-                                        type="text"
-                                    />
-                                </InputGroup>
-                                <InputGroup>
-                                    <label htmlFor="update-content">Content</label>
-                                    <input
-                                        defaultValue={updatingTodo?.content || ''}
-                                        id="update-content"
-                                        name="content"
-                                        type="text"
-                                    />
-                                </InputGroup>
-                                <div className="form-row">
+                                <Stack spacing="small">
                                     <InputGroup>
-                                        <label htmlFor="update-category">Category</label>
-                                        <select
-                                            id="update-category"
-                                            name="category"
-                                        >
-                                            {
-                                                categories.map(category => (
-                                                    <option
-                                                        key={category.id}
-                                                        value={category.value}
-                                                    >
-                                                        {category.displayName}
-                                                    </option>
-                                                ))
-                                            }
-                                        </select>
+                                        <label htmlFor="update-title">Title</label>
+                                        <input
+                                            defaultValue={updatingTodo?.title || ''}
+                                            id="update-title"
+                                            name="title"
+                                            type="text"
+                                        />
                                     </InputGroup>
                                     <InputGroup>
-                                        <label htmlFor="create-priority">Priority</label>
-                                        <select
-                                            id="create-priority"
-                                            name="priority"
-                                            defaultValue={updatingTodo?.priority || ''}
-                                        >
-                                            {
-                                                prioritiesEnum.map(priority => (
-                                                    <option
-                                                        key={priority}
-                                                        value={priority}
-                                                    >
-                                                        {priority}
-                                                    </option>
-                                                ))
-                                            }
-                                        </select>
+                                        <label htmlFor="update-content">Content</label>
+                                        <input
+                                            defaultValue={updatingTodo?.content || ''}
+                                            id="update-content"
+                                            name="content"
+                                            type="text"
+                                        />
                                     </InputGroup>
-                                </div>
-                                <InputGroup>
-                                    <label htmlFor="update-place">Place</label>
-                                    <input
-                                        defaultValue={updatingTodo?.content || ''}
-                                        id="update-place"
-                                        name="place"
-                                        type="text"
-                                    />
-                                </InputGroup>
+                                    <div className="form-row">
+                                        <InputGroup>
+                                            <label htmlFor="update-category">Category</label>
+                                            <select
+                                                id="update-category"
+                                                name="category"
+                                            >
+                                                {
+                                                    categories.map(category => (
+                                                        <option
+                                                            key={category.id}
+                                                            value={category.value}
+                                                        >
+                                                            {category.displayName}
+                                                        </option>
+                                                    ))
+                                                }
+                                            </select>
+                                        </InputGroup>
+                                        <InputGroup>
+                                            <label htmlFor="create-priority">Priority</label>
+                                            <select
+                                                id="create-priority"
+                                                name="priority"
+                                                defaultValue={updatingTodo?.priority || ''}
+                                            >
+                                                {
+                                                    prioritiesEnum.map(priority => (
+                                                        <option
+                                                            key={priority}
+                                                            value={priority}
+                                                        >
+                                                            {priority}
+                                                        </option>
+                                                    ))
+                                                }
+                                            </select>
+                                        </InputGroup>
+                                    </div>
+                                    <InputGroup>
+                                        <label htmlFor="update-place">Place</label>
+                                        <input
+                                            defaultValue={updatingTodo?.content || ''}
+                                            id="update-place"
+                                            name="place"
+                                            type="text"
+                                        />
+                                    </InputGroup>
+                                </Stack>
                                 <div className="button-row">
                                     <button>Submit</button>
                                     <button
@@ -199,7 +202,6 @@ function App() {
                         isCreating &&
                         <form onSubmit={(event) => createTodoSubmitHandler(event)}>
                             <Stack spacing="medium">
-
                                 <h2>Create new plan</h2>
                                 <Stack spacing="small">
                                     <InputGroup>
