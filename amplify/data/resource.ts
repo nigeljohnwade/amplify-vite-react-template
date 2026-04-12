@@ -13,7 +13,7 @@ const schema = a.schema({
         lat: a.float(),
         long: a.float(),
     }),
-    Todo: a
+    Plan: a
         .model({
             category: a.string(),
             content: a.string(),
@@ -23,6 +23,8 @@ const schema = a.schema({
             priority: a.enum(['high', 'medium', 'low']),
             status: a.string(),
             title: a.string().required(),
+            date: a.date(),
+            time: a.time(),
         })
         .authorization(allow => [allow.owner()]),
     Setting: a

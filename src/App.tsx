@@ -11,62 +11,72 @@ import Stack from './components/atoms/Stack/Stack.tsx';
 const client = generateClient<Schema>();
 
 function App() {
-    const [todos, setTodos] = useState<Array<Schema['Todo']['type']>>([]);
+    const [plans, setPlans] = useState<Array<Schema['Plan']['type']>>([]);
     const [isUpdating, setIsUpdating] = useState<string | null>(null);
     const [isCreating, setIsCreating] = useState<boolean>(false);
-    const [updatingTodo, setUpdatingTodo] = useState<Schema['Todo']['type'] | null>(null);
+    const [updatingPlan, setUpdatingPlan] = useState<Schema['Plan']['type'] | null>(null);
     const {user, signOut} = useAuthenticator();
-    const prioritiesEnum = client.enums.TodoPriority.values();
+    const prioritiesEnum = client.enums.PlanPriority.values();
     const categories = [
         {id: 0, value: 'home', displayName: 'Home'},
         {id: 1, value: 'work', displayName: 'Work'},
     ];
 
     useEffect(() => {
-        client.models.Todo.observeQuery().subscribe({
-            next: (data) => setTodos([...data.items]),
+        client.models.Plan.observeQuery().subscribe({
+            next: (data) => setPlans([...data.items]),
         });
     }, []);
 
     useEffect(() => {
-        console.log(updatingTodo);
-    }, [updatingTodo]);
+        console.log(updatingPlan);
+    }, [updatingPlan]);
 
-    function deleteTodo(id: string) {
-        client.models.Todo.delete({id});
+    function deletePlan(id: string) {
+        client.models.Plan.delete({id});
     }
 
-    function updateTodoSubmitHandler(event: any) {
-        event.preventDefault();
+    function extractFields(event: any) {
         const formData: FormData = new FormData(event.target);
         const newContent = formData.get('content') as string;
         const newTitle = formData.get('title') as string;
         const newCategory = formData.get('category') as string;
         const newPriority = formData.get('priority') as any;
+        const newPlace = formData.get('place') as any;
+        const newTime = formData.get('time') as any;
+        const newDate = formData.get('date') as any;
+        return {newContent, newTitle, newCategory, newPriority, newPlace, newTime, newDate};
+    }
+
+    function updatePlanSubmitHandler(event: any) {
+        event.preventDefault();
+        const {newContent, newTitle, newCategory, newPriority, newPlace, newTime, newDate} = extractFields(event);
         if (isUpdating) {
-            client.models.Todo.update({
+            client.models.Plan.update({
                 id: isUpdating,
                 content: newContent,
                 title: newTitle,
                 category: newCategory,
                 priority: newPriority,
+                place: newPlace,
+                time: newTime,
+                date: newDate,
             });
         }
         setIsUpdating(null);
     }
 
-    function createTodoSubmitHandler(event: any) {
+    function createPlanSubmitHandler(event: any) {
         event.preventDefault();
-        const formData: FormData = new FormData(event.target);
-        const newContent = formData.get('content') as string;
-        const newTitle = formData.get('title') as string;
-        const newCategory = formData.get('category') as string;
-        const newPriority = formData.get('priority') as any;
-        client.models.Todo.create({
+        const {newContent, newTitle, newCategory, newPriority, newPlace, newTime, newDate} = extractFields(event);
+        client.models.Plan.create({
             content: newContent,
             title: newTitle,
             category: newCategory,
             priority: newPriority,
+            place: newPlace,
+            time: newTime,
+            date: newDate,
         });
         setIsCreating(false);
     }
@@ -86,23 +96,23 @@ function App() {
                 <>
                     {
                         !isCreating && isUpdating === null &&
-                        <ul className="todos-list">
-                            {todos.map((todo) => (
-                                <li key={todo.id}>
-                                    <p className="todo.title">{todo.title ? todo.title : todo.content ? todo.content.substring(0, 25) : ''}</p>
-                                    <p className="todo-category">{categories.find(category => category.value === todo.category)?.displayName}</p>
-                                    <p className="todo-priority">{todo.priority}</p>
+                        <ul className="plan-list">
+                            {plans.map((plan) => (
+                                <li key={plan.id}>
+                                    <p className="todo-title">{plan.title ? plan.title : plan.content ? plan.content.substring(0, 25) : ''}</p>
+                                    <p className="todo-category">{categories.find(category => category.value === plan.category)?.displayName}</p>
+                                    <p className="todo-priority">{plan.priority}</p>
                                     <div className="button-row">
                                         <button
                                             onClick={() => {
-                                                setIsUpdating(todo.id);
-                                                setUpdatingTodo(todo);
+                                                setIsUpdating(plan.id);
+                                                setUpdatingPlan(plan);
                                                 setIsCreating(false);
                                             }}
                                         >
                                             Edit
                                         </button>
-                                        <button onClick={() => deleteTodo(todo.id)}>Delete</button>
+                                        <button onClick={() => deletePlan(plan.id)}>Delete</button>
                                     </div>
                                 </li>
                             ))}
@@ -112,15 +122,14 @@ function App() {
                 <>
                     {
                         isUpdating &&
-                        <form onSubmit={(event) => updateTodoSubmitHandler(event)}>
+                        <form onSubmit={(event) => updatePlanSubmitHandler(event)}>
                             <Stack spacing="medium">
-
-                                <h2>Update plan {updatingTodo?.title || 'no title'}</h2>
+                                <h2>Update plan {updatingPlan?.title || 'no title'}</h2>
                                 <Stack spacing="small">
                                     <InputGroup>
                                         <label htmlFor="update-title">Title</label>
                                         <input
-                                            defaultValue={updatingTodo?.title || ''}
+                                            defaultValue={updatingPlan?.title || ''}
                                             id="update-title"
                                             name="title"
                                             type="text"
@@ -129,7 +138,7 @@ function App() {
                                     <InputGroup>
                                         <label htmlFor="update-content">Content</label>
                                         <input
-                                            defaultValue={updatingTodo?.content || ''}
+                                            defaultValue={updatingPlan?.content || ''}
                                             id="update-content"
                                             name="content"
                                             type="text"
@@ -155,11 +164,11 @@ function App() {
                                             </select>
                                         </InputGroup>
                                         <InputGroup>
-                                            <label htmlFor="create-priority">Priority</label>
+                                            <label htmlFor="update-priority">Priority</label>
                                             <select
-                                                id="create-priority"
+                                                id="update-priority"
                                                 name="priority"
-                                                defaultValue={updatingTodo?.priority || ''}
+                                                defaultValue={updatingPlan?.priority || ''}
                                             >
                                                 {
                                                     prioritiesEnum.map(priority => (
@@ -177,10 +186,28 @@ function App() {
                                     <InputGroup>
                                         <label htmlFor="update-place">Place</label>
                                         <input
-                                            defaultValue={updatingTodo?.content || ''}
+                                            defaultValue={updatingPlan?.place || ''}
                                             id="update-place"
                                             name="place"
                                             type="text"
+                                        />
+                                    </InputGroup>
+                                    <InputGroup>
+                                        <label htmlFor="update-date">Date</label>
+                                        <input
+                                            defaultValue={updatingPlan?.date || ''}
+                                            id="update-date"
+                                            name="date"
+                                            type="date"
+                                        />
+                                    </InputGroup>
+                                    <InputGroup>
+                                        <label htmlFor="update-time">Time</label>
+                                        <input
+                                            defaultValue={updatingPlan?.time || ''}
+                                            id="update-time"
+                                            name="time"
+                                            type="time"
                                         />
                                     </InputGroup>
                                 </Stack>
@@ -200,7 +227,7 @@ function App() {
                 <>
                     {
                         isCreating &&
-                        <form onSubmit={(event) => createTodoSubmitHandler(event)}>
+                        <form onSubmit={(event) => createPlanSubmitHandler(event)}>
                             <Stack spacing="medium">
                                 <h2>Create new plan</h2>
                                 <Stack spacing="small">
@@ -267,6 +294,24 @@ function App() {
                                             id="update-place"
                                             name="place"
                                             type="text"
+                                        />
+                                    </InputGroup>
+                                    <InputGroup>
+                                        <label htmlFor="create-date">Date</label>
+                                        <input
+                                            defaultValue={updatingPlan?.date || ''}
+                                            id="create-date"
+                                            name="date"
+                                            type="date"
+                                        />
+                                    </InputGroup>
+                                    <InputGroup>
+                                        <label htmlFor="create-time">Time</label>
+                                        <input
+                                            defaultValue={updatingPlan?.time || ''}
+                                            id="create-time"
+                                            name="time"
+                                            type="time"
                                         />
                                     </InputGroup>
                                 </Stack>
