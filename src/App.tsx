@@ -14,6 +14,7 @@ function App() {
     const [todos, setTodos] = useState<Array<Schema['Todo']['type']>>([]);
     const [isUpdating, setIsUpdating] = useState<string | null>(null);
     const [isCreating, setIsCreating] = useState<boolean>(false);
+    const [updatingTodo, setUpdatingTodo] = useState<Schema['Todo']['type'] | null>(null);
     const {user, signOut} = useAuthenticator();
     const prioritiesEnum = client.enums.TodoPriority.values();
     const categories = [
@@ -26,6 +27,10 @@ function App() {
             next: (data) => setTodos([...data.items]),
         });
     }, []);
+
+    useEffect(() => {
+        console.log(updatingTodo);
+    }, [updatingTodo]);
 
     function deleteTodo(id: string) {
         client.models.Todo.delete({id});
@@ -89,6 +94,7 @@ function App() {
                                 <button
                                     onClick={() => {
                                         setIsUpdating(todo.id);
+                                        setUpdatingTodo(todo);
                                         setIsCreating(false);
                                     }}
                                 >
@@ -108,7 +114,7 @@ function App() {
                         <InputGroup>
                             <label htmlFor="update-title">Title</label>
                             <input
-                                defaultValue={todos.find(todo => todo.id === isUpdating)?.title || ''}
+                                defaultValue={updatingTodo?.title || ''}
                                 id="update-title"
                                 name="title"
                                 type="text"
@@ -117,7 +123,7 @@ function App() {
                         <InputGroup>
                             <label htmlFor="update-content">Content</label>
                             <input
-                                defaultValue={todos.find(todo => todo.id === isUpdating)?.content || ''}
+                                defaultValue={updatingTodo?.content || ''}
                                 id="update-content"
                                 name="content"
                                 type="text"
@@ -148,7 +154,7 @@ function App() {
                                 <select
                                     id="create-priority"
                                     name="priority"
-                                    defaultValue={todos.find(todo => todo.id === isUpdating)?.priority || ''}
+                                    defaultValue={updatingTodo?.priority || ''}
                                 >
                                     {
                                         prioritiesEnum.map(priority => (
@@ -166,7 +172,7 @@ function App() {
                         <InputGroup>
                             <label htmlFor="update-place">Place</label>
                             <input
-                                defaultValue={todos.find(todo => todo.id === isUpdating)?.content || ''}
+                                defaultValue={updatingTodo?.content || ''}
                                 id="update-place"
                                 name="place"
                                 type="text"
@@ -192,8 +198,8 @@ function App() {
                         <InputGroup>
                             <label htmlFor="create-title">Title</label>
                             <input
-                                defaultValue={todos.find(todo => todo.id === isUpdating)?.title || ''}
-                                id="update-title"
+                                defaultValue={''}
+                                id="create-title"
                                 name="title"
                                 type="text"
                             />
@@ -201,7 +207,7 @@ function App() {
                         <InputGroup>
                             <label htmlFor="create-content">Content</label>
                             <input
-                                defaultValue={todos.find(todo => todo.id === isUpdating)?.content || ''}
+                                defaultValue={''}
                                 id="create-content"
                                 name="content"
                                 type="text"
@@ -248,7 +254,7 @@ function App() {
                         <InputGroup>
                             <label htmlFor="create-place">Place</label>
                             <input
-                                defaultValue={todos.find(todo => todo.id === isUpdating)?.place || ''}
+                                defaultValue={''}
                                 id="update-place"
                                 name="place"
                                 type="text"
