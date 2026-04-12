@@ -102,6 +102,7 @@ function App() {
                                     <p className="todo-title">{plan.title ? plan.title : plan.content ? plan.content.substring(0, 25) : ''}</p>
                                     <p className="todo-category">{categories.find(category => category.value === plan.category)?.displayName}</p>
                                     <p className="todo-priority">{plan.priority}</p>
+                                    <p>{plan.date} {plan.time}</p>
                                     <div className="button-row">
                                         <button
                                             onClick={() => {
@@ -212,7 +213,7 @@ function App() {
                                     </InputGroup>
                                 </Stack>
                                 <div className="button-row">
-                                    <button>Submit</button>
+                                    <button>Update</button>
                                     <button
                                         type="button"
                                         onClick={() => setIsUpdating(null)}
@@ -316,7 +317,7 @@ function App() {
                                     </InputGroup>
                                 </Stack>
                                 <div className="button-row">
-                                    <button>Submit</button>
+                                    <button>Create</button>
                                     <button
                                         type="button"
                                         onClick={() => setIsCreating(false)}
