@@ -38,7 +38,7 @@ function App() {
     }, []);
 
     useEffect(() => {
-        mapboxgl.accessToken = 'pk.eyJ1IjoibmlnZWxqb2hud2FkZSIsImEiOiJjazZldzF4azEwaTNrM2txcGl5cHl4b2NmIn0.zakMLSZFY8JDePqgWedLXg';
+        mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_API_KEY;
 
         mapRef.current = new mapboxgl.Map({
             container: mapContainerRef.current,
