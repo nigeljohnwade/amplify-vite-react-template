@@ -84,11 +84,11 @@ function App() {
         if (isUpdating) {
             client.models.Plan.update({
                 id: isUpdating,
-                content: newContent,
+                content: newContent !== '' ? newContent : '',
                 title: newTitle,
                 category: newCategory !== '' ? newCategory : null,
                 priority: newPriority !== '' ? newPriority : null,
-                place: newPlace,
+                place: newPlace !== '' ? newPlace : null,
                 time: newTime !== '' ? newTime : null,
                 date: newDate !== '' ? newDate : null,
             });
@@ -100,11 +100,11 @@ function App() {
         event.preventDefault();
         const {newContent, newTitle, newCategory, newPriority, newPlace, newTime, newDate} = extractFields(event);
         client.models.Plan.create({
-            content: newContent,
+            content: newContent !== '' ? newContent : '',
             title: newTitle,
-            category: newCategory,
+            category: newCategory !== '' ? newCategory : null,
             priority: newPriority !== '' ? newPriority : null,
-            place: newPlace,
+            place: newPlace !== '' ? newPlace : null,
             time: newTime !== '' ? newTime : null,
             date: newDate !== '' ? newDate : null,
         });
@@ -218,6 +218,7 @@ function App() {
                                                 name="priority"
                                                 defaultValue={updatingPlan?.priority || ''}
                                             >
+                                                <option value={''}>None</option>
                                                 {
                                                     prioritiesEnum.map(priority => (
                                                         <option
