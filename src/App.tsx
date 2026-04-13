@@ -64,8 +64,7 @@ function App() {
 
     useEffect(() => {
         if (isUpdating && updatingPlan && updatingPlan.location) {
-            // @ts-ignore
-            setCenter([updatingPlan.location.long, updatingPlan.location.lat]);
+            setCenter([updatingPlan.location.long || INITIAL_CENTER[0], updatingPlan.location.lat || INITIAL_CENTER[1]]);
             mapRef.current.flyTo({
                 center: [updatingPlan.location.long, updatingPlan.location.lat],
                 zoom: zoom
@@ -91,12 +90,22 @@ function App() {
         const newPlace = formData.get('place') as any;
         const newTime = formData.get('time') as any;
         const newDate = formData.get('date') as any;
-        return {newContent, newTitle, newCategory, newPriority, newPlace, newTime, newDate};
+        const saveLocation = formData.get('location-checkbox') === 'true' ? true : false;
+        return {newContent, newTitle, newCategory, newPriority, newPlace, newTime, newDate, saveLocation};
     }
 
     function updatePlanSubmitHandler(event: any) {
         event.preventDefault();
-        const {newContent, newTitle, newCategory, newPriority, newPlace, newTime, newDate} = extractFields(event);
+        const {
+            newContent,
+            newTitle,
+            newCategory,
+            newPriority,
+            newPlace,
+            newTime,
+            newDate,
+            saveLocation
+        } = extractFields(event);
         if (isUpdating) {
             client.models.Plan.update({
                 id: isUpdating,
@@ -107,10 +116,10 @@ function App() {
                 place: newPlace !== '' ? newPlace : null,
                 time: newTime !== '' ? newTime : null,
                 date: newDate !== '' ? newDate : null,
-                location: {
+                location: saveLocation ? {
                     lat: center[1],
                     long: center[0],
-                },
+                } : null,
             });
         }
         setIsUpdating(null);
@@ -118,7 +127,16 @@ function App() {
 
     function createPlanSubmitHandler(event: any) {
         event.preventDefault();
-        const {newContent, newTitle, newCategory, newPriority, newPlace, newTime, newDate} = extractFields(event);
+        const {
+            newContent,
+            newTitle,
+            newCategory,
+            newPriority,
+            newPlace,
+            newTime,
+            newDate,
+            saveLocation
+        } = extractFields(event);
         client.models.Plan.create({
             content: newContent !== '' ? newContent : '',
             title: newTitle,
@@ -127,10 +145,10 @@ function App() {
             place: newPlace !== '' ? newPlace : null,
             time: newTime !== '' ? newTime : null,
             date: newDate !== '' ? newDate : null,
-            location: {
+            location: saveLocation ? {
                 lat: center[1],
                 long: center[0],
-            },
+            } : null,
         });
         setIsCreating(false);
     }
@@ -281,7 +299,7 @@ function App() {
                                     <InputGroup>
                                         <label htmlFor="update-longitude">Longitude</label>
                                         <input
-                                            value={center[0]}
+                                            value={updatingPlan?.location?.long || center[0]}
                                             id="update-longitude"
                                             name="longitude"
                                             type="number"
@@ -291,11 +309,21 @@ function App() {
                                     <InputGroup>
                                         <label htmlFor="update-latitude">Latitude</label>
                                         <input
-                                            value={center[1]}
+                                            value={updatingPlan?.location?.lat || center[1]}
                                             id="update-latitude"
                                             name="latitude"
                                             type="number"
                                             readOnly={true}
+                                        />
+                                    </InputGroup>
+                                    <InputGroup>
+                                        <label htmlFor="create-location-checkbox">Save location</label>
+                                        <input
+                                            type="checkbox"
+                                            id="create-location-checkbox"
+                                            name="location-checkbox"
+                                            value="true"
+                                            checked={updatingPlan?.location !== null}
                                         />
                                     </InputGroup>
                                 </Stack>
@@ -422,6 +450,15 @@ function App() {
                                             name="latitude"
                                             type="number"
                                             readOnly={true}
+                                        />
+                                    </InputGroup>
+                                    <InputGroup>
+                                        <label htmlFor="create-location-checkbox">Save location</label>
+                                        <input
+                                            type="checkbox"
+                                            id="create-location-checkbox"
+                                            name="location-checkbox"
+                                            value="true"
                                         />
                                     </InputGroup>
                                 </Stack>
