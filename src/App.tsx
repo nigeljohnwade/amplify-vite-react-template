@@ -158,11 +158,6 @@ function App() {
                                             </li>
                                         ))}
                             </ul>
-                            <button onClick={handleInitialize}>Center map</button>
-                            <div
-                                id="map-container"
-                                ref={mapContainerRef}
-                            />
                         </>
                     }
                 </>
@@ -379,6 +374,11 @@ function App() {
                         </form>
                     }
                 </>
+                <button onClick={handleInitialize}>Center map</button>
+                <div
+                    id="map-container"
+                    ref={mapContainerRef}
+                />
             </Stack>
         </main>
     );
