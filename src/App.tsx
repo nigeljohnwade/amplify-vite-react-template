@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useAuthenticator } from '@aws-amplify/ui-react';
+import mapboxgl from 'mapbox-gl';
 
 import './App.css';
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 import type { Schema } from '../amplify/data/resource';
 import { generateClient } from 'aws-amplify/data';
@@ -10,11 +12,18 @@ import Stack from './components/atoms/Stack/Stack.tsx';
 
 const client = generateClient<Schema>();
 
+const INITIAL_CENTER: [number, number] = [-3.18393, 55.96118];
+const INITIAL_ZOOM = 15;
+
 function App() {
     const [plans, setPlans] = useState<Array<Schema['Plan']['type']>>([]);
     const [isUpdating, setIsUpdating] = useState<string | null>(null);
     const [isCreating, setIsCreating] = useState<boolean>(false);
+    const [center, setCenter] = useState<[number, number]>(INITIAL_CENTER);
+    const [zoom, setZoom] = useState<number>(INITIAL_ZOOM);
     const [updatingPlan, setUpdatingPlan] = useState<Schema['Plan']['type'] | null>(null);
+    const mapRef = useRef<any>(null);
+    const mapContainerRef = useRef<any>(null);
     const {user, signOut} = useAuthenticator();
     const prioritiesEnum = client.enums.PlanPriority.values();
     const categories = [
@@ -29,8 +38,29 @@ function App() {
     }, []);
 
     useEffect(() => {
-        console.log(updatingPlan);
-    }, [updatingPlan]);
+        mapboxgl.accessToken = 'pk.eyJ1IjoibmlnZWxqb2hud2FkZSIsImEiOiJjazZldzF4azEwaTNrM2txcGl5cHl4b2NmIn0.zakMLSZFY8JDePqgWedLXg';
+
+        mapRef.current = new mapboxgl.Map({
+            container: mapContainerRef.current,
+            center: [center[0], center[1]],
+            zoom: zoom,
+            style: 'mapbox://styles/nigeljohnwade/ck6t9mbdx2osp1in0fnb3xd1c'
+        });
+        mapRef.current.on('move', () => {
+            // get the current center coordinates and zoom level from the map
+            const mapCenter = mapRef.current.getCenter();
+            const mapZoom = mapRef.current.getZoom();
+
+            // update state
+            setCenter([mapCenter.lng, mapCenter.lat]);
+            setZoom(mapZoom);
+            console.log(mapRef.current.getCenter());
+            console.log(mapRef.current.getZoom());
+        });
+        return () => {
+            mapRef.current.remove();
+        };
+    }, []);
 
     function deletePlan(id: string) {
         client.models.Plan.delete({id});
@@ -81,6 +111,12 @@ function App() {
         setIsCreating(false);
     }
 
+    const handleInitialize = () => {
+        mapRef.current.flyTo({
+            center: INITIAL_CENTER,
+            zoom: INITIAL_ZOOM
+        });
+    };
     return (
         <main className="main">
             <Stack spacing="large">
@@ -88,44 +124,46 @@ function App() {
                 <>
                     {
                         !isCreating && isUpdating === null &&
-                        <button
-                            onClick={() => {
-                                setIsCreating(true);
-                                setIsUpdating(null);
-                            }}
-                        >
-                            Make a new plan
-                        </button>
-                    }
-                </>
-                <>
-                    {
-                        !isCreating && isUpdating === null &&
-                        <ul className="plan-list">
-                            {
-                                plans
-                                    .sort((a, b) => a.category === 'work' && b.category === 'home' ? -1 : 1)
-                                    .map((plan) => (
-                                        <li key={plan.id}>
-                                            <p className="todo-title">{plan.title ? plan.title : plan.content ? plan.content.substring(0, 35) : ''}</p>
-                                            <p className="todo-category">{categories.find(category => category.value === plan.category)?.displayName}</p>
-                                            <p className="todo-priority">{plan.priority}</p>
-                                            <p>{plan.date} {plan.time}</p>
-                                            <div className="button-row">
-                                                <button
-                                                    onClick={() => {
-                                                        setIsUpdating(plan.id);
-                                                        setUpdatingPlan(plan);
-                                                        setIsCreating(false);
-                                                    }}
-                                                >
-                                                    Edit
-                                                </button>
-                                                <button onClick={() => deletePlan(plan.id)}>Delete</button>
-                                            </div>
-                                        </li>
-                                    ))}
-                        </ul>
+                        <>
+                            <button
+                                onClick={() => {
+                                    setIsCreating(true);
+                                    setIsUpdating(null);
+                                }}
+                            >
+                                Make a new plan
+                            </button>
+                            <ul className="plan-list">
+                                {
+                                    plans
+                                        .sort((a, b) => a.category === 'work' && b.category === 'home' ? -1 : 1)
+                                        .map((plan) => (
+                                            <li key={plan.id}>
+                                                <p className="todo-title">{plan.title ? plan.title : plan.content ? plan.content.substring(0, 35) : ''}</p>
+                                                <p className="todo-category">{categories.find(category => category.value === plan.category)?.displayName}</p>
+                                                <p className="todo-priority">{plan.priority}</p>
+                                                <p>{plan.date} {plan.time}</p>
+                                                <div className="button-row">
+                                                    <button
+                                                        onClick={() => {
+                                                            setIsUpdating(plan.id);
+                                                            setUpdatingPlan(plan);
+                                                            setIsCreating(false);
+                                                        }}
+                                                    >
+                                                        Edit
+                                                    </button>
+                                                    <button onClick={() => deletePlan(plan.id)}>Delete</button>
+                                                </div>
+                                            </li>
+                                        ))}
+                            </ul>
+                            <button onClick={handleInitialize}>Center map</button>
+                            <div
+                                id="map-container"
+                                ref={mapContainerRef}
+                            />
+                        </>
                     }
                 </>
                 <>

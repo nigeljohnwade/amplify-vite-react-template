@@ -59,9 +59,6 @@ h5 {
     font-size: .75em;
 }
 
-button {
-    min-width: 5rem;
-}
 
 /* Application specific */
 
@@ -150,4 +147,10 @@ ul.plan-list {
 
 select[name="priority"] {
     text-transform: capitalize;
+}
+
+div#map-container {
+    background-color: black;
+    width: 50vw;
+    height: 50vw;
 }
