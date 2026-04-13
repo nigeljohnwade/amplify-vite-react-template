@@ -73,7 +73,7 @@ function App() {
             content: newContent,
             title: newTitle,
             category: newCategory,
-            priority: newPriority,
+            priority: newPriority !== '' ? newPriority : null,
             place: newPlace,
             time: newTime !== '' ? newTime : null,
             date: newDate !== '' ? newDate : null,
