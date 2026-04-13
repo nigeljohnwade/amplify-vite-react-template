@@ -62,6 +62,22 @@ function App() {
         };
     }, []);
 
+    useEffect(() => {
+        if (isUpdating && updatingPlan && updatingPlan.location) {
+            // @ts-ignore
+            setCenter([updatingPlan.location.long, updatingPlan.location.lat]);
+            mapRef.current.flyTo({
+                center: [updatingPlan.location.long, updatingPlan.location.lat],
+                zoom: zoom
+            });
+        } else if (!isUpdating) {
+            mapRef.current.flyTo({
+                center: INITIAL_CENTER,
+                zoom: zoom
+            });
+        }
+    }, [isUpdating]);
+
     function deletePlan(id: string) {
         client.models.Plan.delete({id});
     }
@@ -91,6 +107,10 @@ function App() {
                 place: newPlace !== '' ? newPlace : null,
                 time: newTime !== '' ? newTime : null,
                 date: newDate !== '' ? newDate : null,
+                location: {
+                    lat: center[1],
+                    long: center[0],
+                },
             });
         }
         setIsUpdating(null);
@@ -107,6 +127,10 @@ function App() {
             place: newPlace !== '' ? newPlace : null,
             time: newTime !== '' ? newTime : null,
             date: newDate !== '' ? newDate : null,
+            location: {
+                lat: center[1],
+                long: center[0],
+            },
         });
         setIsCreating(false);
     }
@@ -254,6 +278,26 @@ function App() {
                                             type="time"
                                         />
                                     </InputGroup>
+                                    <InputGroup>
+                                        <label htmlFor="update-longitude">Longitude</label>
+                                        <input
+                                            value={center[0]}
+                                            id="update-longitude"
+                                            name="longitude"
+                                            type="number"
+                                            readOnly={true}
+                                        />
+                                    </InputGroup>
+                                    <InputGroup>
+                                        <label htmlFor="update-latitude">Latitude</label>
+                                        <input
+                                            value={center[1]}
+                                            id="update-latitude"
+                                            name="latitude"
+                                            type="number"
+                                            readOnly={true}
+                                        />
+                                    </InputGroup>
                                 </Stack>
                                 <div className="button-row">
                                     <button>Update</button>
@@ -358,6 +402,26 @@ function App() {
                                             id="create-time"
                                             name="time"
                                             type="time"
+                                        />
+                                    </InputGroup>
+                                    <InputGroup>
+                                        <label htmlFor="create-longitude">Longitude</label>
+                                        <input
+                                            value={center[0]}
+                                            id="create-longitude"
+                                            name="longitude"
+                                            type="number"
+                                            readOnly={true}
+                                        />
+                                    </InputGroup>
+                                    <InputGroup>
+                                        <label htmlFor="create-latitude">Latitude</label>
+                                        <input
+                                            value={center[1]}
+                                            id="create-latitude"
+                                            name="latitude"
+                                            type="number"
+                                            readOnly={true}
                                         />
                                     </InputGroup>
                                 </Stack>
