@@ -1,15 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
 import { useAuthenticator } from '@aws-amplify/ui-react';
+import { generateClient } from 'aws-amplify/data';
+import { Amplify } from 'aws-amplify';
 import mapboxgl from 'mapbox-gl';
 
 import './App.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
+import outputs from '../amplify_outputs.json';
 import type { Schema } from '../amplify/data/resource';
-import { generateClient } from 'aws-amplify/data';
 import InputGroup from './components/atoms/InputGroup/InputGroup.tsx';
 import Stack from './components/atoms/Stack/Stack.tsx';
 
+Amplify.configure(outputs);
 const client = generateClient<Schema>();
 
 const INITIAL_CENTER: [number, number] = [-3.18393, 55.96118];
@@ -44,7 +47,7 @@ function App() {
             container: mapContainerRef.current,
             center: [center[0], center[1]],
             zoom: zoom,
-            style: 'mapbox://styles/nigeljohnwade/ck6t9mbdx2osp1in0fnb3xd1c'
+            style: 'mapbox://styles/nigeljohnwade/ck6t9mbdx2osp1in0fnb3xd1c',
         });
         mapRef.current.on('move', () => {
             // get the current center coordinates and zoom level from the map
@@ -54,9 +57,15 @@ function App() {
             // update state
             setCenter([mapCenter.lng, mapCenter.lat]);
             setZoom(mapZoom);
-            console.log(mapRef.current.getCenter());
-            console.log(mapRef.current.getZoom());
         });
+        // create a marker at a coordinate
+        new mapboxgl.Marker({
+            color: 'blue',
+            scale: 1.5,
+        })
+            .setLngLat(INITIAL_CENTER)
+            .addTo(mapRef.current);
+
         return () => {
             mapRef.current.remove();
         };
@@ -76,6 +85,28 @@ function App() {
             });
         }
     }, [isUpdating]);
+
+    useEffect(() => {
+        if (!isCreating) {
+            mapRef.current.flyTo({
+                center: INITIAL_CENTER,
+                zoom: zoom
+            });
+        }
+    }, [isCreating]);
+
+    useEffect(() => {
+        plans.forEach(plan => {
+            if (plan.location !== null && plan.location !== undefined) {
+                // create a marker for each location
+                new mapboxgl.Marker({
+                    color: 'green',
+                })
+                    .setLngLat([Number(plan.location.long), Number(plan.location.lat)])
+                    .addTo(mapRef.current);
+            }
+        });
+    }, [plans]);
 
     function deletePlan(id: string) {
         client.models.Plan.delete({id});
@@ -159,6 +190,20 @@ function App() {
             zoom: INITIAL_ZOOM
         });
     };
+
+    const sortByCategory = (a: Schema['Plan']['type'], b: Schema['Plan']['type']) => {
+        if (a.category && b.category) {
+            const _a = categories.find(category => category.value === a.category)!.id;
+            const _b = categories.find(category => category.value === b.category)!.id;
+            return _a > _b ? 1 : -1;
+        } else if (a.category && !b.category) {
+            return -1;
+        } else if (!a.category && b.category) {
+            return 1;
+        } else {
+            return 0;
+        }
+    };
     return (
         <main className="main">
             <Stack spacing="large">
@@ -178,7 +223,8 @@ function App() {
                             <ul className="plan-list">
                                 {
                                     plans
-                                        .sort((a, b) => a.category === 'work' && b.category === 'home' ? -1 : 1)
+                                        // .sort((a, b) => a.category === 'work' && b.category === 'home' ? -1 : 1)
+                                        .sort(sortByCategory)
                                         .map((plan) => (
                                             <li key={plan.id}>
                                                 <p className="todo-title">{plan.title ? plan.title : plan.content ? plan.content.substring(0, 35) : ''}</p>
@@ -459,6 +505,7 @@ function App() {
                                             id="create-location-checkbox"
                                             name="location-checkbox"
                                             value="true"
+                                            defaultChecked={false}
                                         />
                                     </InputGroup>
                                 </Stack>
@@ -475,11 +522,17 @@ function App() {
                         </form>
                     }
                 </>
-                <button onClick={handleInitialize}>Center map</button>
-                <div
-                    id="map-container"
-                    ref={mapContainerRef}
-                />
+                <div className="map-wrapper">
+                    <div
+                        id="map-container"
+                        ref={mapContainerRef}
+                    />
+                    {
+                        isCreating &&
+                        <div className="map-center"></div>
+                    }
+                    <button onClick={handleInitialize}>Center map</button>
+                </div>
             </Stack>
         </main>
     );
