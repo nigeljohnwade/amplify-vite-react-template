@@ -77,12 +77,10 @@ function App() {
             setCenter([updatingPlan.location.long || INITIAL_CENTER[0], updatingPlan.location.lat || INITIAL_CENTER[1]]);
             mapRef.current.flyTo({
                 center: [updatingPlan.location.long, updatingPlan.location.lat],
-                zoom: zoom
             });
         } else if (!isUpdating) {
             mapRef.current.flyTo({
                 center: INITIAL_CENTER,
-                zoom: zoom
             });
         }
     }, [isUpdating]);
@@ -91,7 +89,6 @@ function App() {
         if (!isCreating) {
             mapRef.current.flyTo({
                 center: INITIAL_CENTER,
-                zoom: zoom
             });
         }
     }, [isCreating]);
@@ -122,7 +119,7 @@ function App() {
         const newPlace = formData.get('place') as any;
         const newTime = formData.get('time') as any;
         const newDate = formData.get('date') as any;
-        const saveLocation = formData.get('location-checkbox') === 'true' ? true : false;
+        const saveLocation = formData.get('location-checkbox') === 'true';
         return {newContent, newTitle, newCategory, newPriority, newPlace, newTime, newDate, saveLocation};
     }
 
