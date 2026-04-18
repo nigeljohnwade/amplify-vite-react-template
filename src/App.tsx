@@ -25,6 +25,7 @@ function App() {
     const [center, setCenter] = useState<[number, number]>(INITIAL_CENTER);
     const [zoom, setZoom] = useState<number>(INITIAL_ZOOM);
     const [updatingPlan, setUpdatingPlan] = useState<Schema['Plan']['type'] | null>(null);
+    const [tileView, setTileView] = useState<boolean>(true);
     const mapRef = useRef<any>(null);
     const mapContainerRef = useRef<any>(null);
     const {user, signOut} = useAuthenticator();
@@ -212,15 +213,30 @@ function App() {
                     {
                         !isCreating && isUpdating === null &&
                         <>
-                            <button
-                                onClick={() => {
-                                    setIsCreating(true);
-                                    setIsUpdating(null);
-                                }}
+                            <div className="button-row">
+                                <button
+                                    onClick={() => {
+                                        setIsCreating(true);
+                                        setIsUpdating(null);
+                                    }}
+                                >
+                                    Make a new plan
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        setTileView(!tileView);
+                                    }}
+                                >
+                                    Toggle view
+                                </button>
+                            </div>
+
+                            <ul
+                                className={[
+                                    'plan-list',
+                                    tileView ? 'tile-view' : 'list-view',
+                                ].join(' ')}
                             >
-                                Make a new plan
-                            </button>
-                            <ul className="plan-list">
                                 {
                                     plans
                                         // .sort((a, b) => a.category === 'work' && b.category === 'home' ? -1 : 1)
@@ -229,8 +245,13 @@ function App() {
                                             <li key={plan.id}>
                                                 <p className="todo-title">{plan.title ? plan.title : plan.content ? plan.content.substring(0, 35) : ''}</p>
                                                 <p className="todo-category">{categories.find(category => category.value === plan.category)?.displayName}</p>
-                                                <p className="todo-priority">{plan.priority}</p>
-                                                <p>{plan.date} {plan.time}</p>
+                                                {
+                                                    !tileView &&
+                                                    <>
+                                                        <p className="todo-priority">{plan.priority}</p>
+                                                        <p>{plan.date} {plan.time}</p>
+                                                    </>
+                                                }
                                                 <div className="button-row">
                                                     <button
                                                         onClick={() => {
