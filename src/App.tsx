@@ -239,7 +239,13 @@ function App() {
                                         // .sort((a, b) => a.category === 'work' && b.category === 'home' ? -1 : 1)
                                         .sort(sortByCategory)
                                         .map((plan) => (
-                                            <li key={plan.id}>
+                                            <li
+                                                key={plan.id}
+                                                className={[
+                                                    plan.location !== null ? 'wide' : '',
+                                                    plan.date !== null ? 'tall' : '',
+                                                ].join(' ')}
+                                            >
                                                 <p className="todo-title">{plan.title ? plan.title : plan.content ? plan.content.substring(0, 35) : ''}</p>
                                                 <p className="todo-category">{categories.find(category => category.value === plan.category)?.displayName}</p>
                                                 {
@@ -387,7 +393,7 @@ function App() {
                                             id="create-location-checkbox"
                                             name="location-checkbox"
                                             value="true"
-                                            checked={updatingPlan?.location !== null}
+                                            defaultChecked={updatingPlan?.location !== null}
                                         />
                                     </InputGroup>
                                 </Stack>
