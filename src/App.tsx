@@ -23,7 +23,7 @@ function App() {
     const [isUpdating, setIsUpdating] = useState<string | null>(null);
     const [isCreating, setIsCreating] = useState<boolean>(false);
     const [center, setCenter] = useState<[number, number]>(INITIAL_CENTER);
-    const [zoom, setZoom] = useState<number>(INITIAL_ZOOM);
+    const [, setZoom] = useState<number>(INITIAL_ZOOM);
     const [updatingPlan, setUpdatingPlan] = useState<Schema['Plan']['type'] | null>(null);
     const [tileView, setTileView] = useState<boolean>(true);
     const mapRef = useRef<any>(null);
@@ -46,8 +46,8 @@ function App() {
 
         mapRef.current = new mapboxgl.Map({
             container: mapContainerRef.current,
-            center: [center[0], center[1]],
-            zoom: zoom,
+            center: [INITIAL_CENTER[0], INITIAL_CENTER[1]],
+            zoom: INITIAL_ZOOM,
             style: 'mapbox://styles/nigeljohnwade/ck6t9mbdx2osp1in0fnb3xd1c',
         });
         mapRef.current.on('move', () => {
@@ -83,7 +83,10 @@ function App() {
                 center: INITIAL_CENTER,
             });
         }
-    }, [isUpdating]);
+    }, [
+        isUpdating,
+        updatingPlan
+    ]);
 
     useEffect(() => {
         if (!isCreating) {
@@ -202,363 +205,401 @@ function App() {
             return 0;
         }
     };
-    return (
-        <main className="main">
-            <Stack spacing="large">
-                <h1>{user?.signInDetails?.loginId}'s plans <button onClick={signOut}>Sign out</button></h1>
-                <>
-                    {
-                        !isCreating && isUpdating === null &&
-                        <>
-                            <div className="button-row">
-                                <button
-                                    onClick={() => {
-                                        setIsCreating(true);
-                                        setIsUpdating(null);
-                                    }}
-                                >
-                                    Make a new plan
-                                </button>
-                                <button
-                                    onClick={() => {
-                                        setTileView(!tileView);
-                                    }}
-                                >
-                                    Toggle view
-                                </button>
-                            </div>
 
-                            <ul
-                                className={[
-                                    'plan-list',
-                                    tileView ? 'tile-view' : 'list-view',
-                                ].join(' ')}
-                            >
-                                {
-                                    plans
-                                        // .sort((a, b) => a.category === 'work' && b.category === 'home' ? -1 : 1)
-                                        .sort(sortByCategory)
-                                        .map((plan) => (
-                                            <li
-                                                key={plan.id}
-                                                className={[
-                                                    plan.location !== null ? 'wide' : '',
-                                                    plan.date !== null ? 'tall' : '',
-                                                ].join(' ')}
-                                            >
-                                                <p className="todo-title">{plan.title ? plan.title : plan.content ? plan.content.substring(0, 35) : ''}</p>
-                                                <p className="todo-category">{categories.find(category => category.value === plan.category)?.displayName}</p>
-                                                {
-                                                    !tileView &&
-                                                    <>
-                                                        <p className="todo-priority">{plan.priority}</p>
-                                                        <p>{plan.date} {plan.time}</p>
-                                                    </>
-                                                }
-                                                <div className="button-row">
-                                                    <button
-                                                        onClick={() => {
-                                                            setIsUpdating(plan.id);
-                                                            setUpdatingPlan(plan);
-                                                            setIsCreating(false);
-                                                        }}
-                                                    >
-                                                        Edit
-                                                    </button>
-                                                    <button onClick={() => deletePlan(plan.id)}>Delete</button>
-                                                </div>
-                                            </li>
-                                        ))}
-                            </ul>
-                        </>
-                    }
-                </>
-                <>
-                    {
-                        isUpdating &&
-                        <form onSubmit={(event) => updatePlanSubmitHandler(event)}>
-                            <Stack spacing="medium">
-                                <h2>Update plan {updatingPlan?.title || 'no title'}</h2>
-                                <Stack spacing="small">
-                                    <InputGroup>
-                                        <label htmlFor="update-title">Title</label>
-                                        <input
-                                            defaultValue={updatingPlan?.title || ''}
-                                            id="update-title"
-                                            name="title"
-                                            type="text"
-                                        />
-                                    </InputGroup>
-                                    <InputGroup>
-                                        <label htmlFor="update-content">Content</label>
-                                        <textarea
-                                            defaultValue={updatingPlan?.content || ''}
-                                            id="update-content"
-                                            name="content"
-                                        />
-                                    </InputGroup>
-                                    <div className="form-row">
-                                        <InputGroup>
-                                            <label htmlFor="update-category">Category</label>
-                                            <select
-                                                id="update-category"
-                                                name="category"
-                                                defaultValue={updatingPlan?.category || ''}
-                                            >
-                                                <option value={''}>None</option>
-                                                {
-                                                    categories.map(category => (
-                                                        <option
-                                                            key={category.id}
-                                                            value={category.value}
-                                                        >
-                                                            {category.displayName}
-                                                        </option>
-                                                    ))
-                                                }
-                                            </select>
-                                        </InputGroup>
-                                        <InputGroup>
-                                            <label htmlFor="update-priority">Priority</label>
-                                            <select
-                                                id="update-priority"
-                                                name="priority"
-                                                defaultValue={updatingPlan?.priority || ''}
-                                            >
-                                                <option value={''}>None</option>
-                                                {
-                                                    prioritiesEnum.map(priority => (
-                                                        <option
-                                                            key={priority}
-                                                            value={priority}
-                                                        >
-                                                            {priority}
-                                                        </option>
-                                                    ))
-                                                }
-                                            </select>
-                                        </InputGroup>
-                                    </div>
-                                    <InputGroup>
-                                        <label htmlFor="update-place">Place</label>
-                                        <input
-                                            defaultValue={updatingPlan?.place || ''}
-                                            id="update-place"
-                                            name="place"
-                                            type="text"
-                                        />
-                                    </InputGroup>
-                                    <InputGroup>
-                                        <label htmlFor="update-date">Date</label>
-                                        <input
-                                            defaultValue={updatingPlan?.date || ''}
-                                            id="update-date"
-                                            name="date"
-                                            type="date"
-                                        />
-                                    </InputGroup>
-                                    <InputGroup>
-                                        <label htmlFor="update-time">Time</label>
-                                        <input
-                                            defaultValue={updatingPlan?.time || ''}
-                                            id="update-time"
-                                            name="time"
-                                            type="time"
-                                        />
-                                    </InputGroup>
-                                    <InputGroup>
-                                        <label htmlFor="update-longitude">Longitude</label>
-                                        <input
-                                            value={updatingPlan?.location?.long || center[0]}
-                                            id="update-longitude"
-                                            name="longitude"
-                                            type="number"
-                                            readOnly={true}
-                                        />
-                                    </InputGroup>
-                                    <InputGroup>
-                                        <label htmlFor="update-latitude">Latitude</label>
-                                        <input
-                                            value={updatingPlan?.location?.lat || center[1]}
-                                            id="update-latitude"
-                                            name="latitude"
-                                            type="number"
-                                            readOnly={true}
-                                        />
-                                    </InputGroup>
-                                    <InputGroup>
-                                        <label htmlFor="create-location-checkbox">Save location</label>
-                                        <input
-                                            type="checkbox"
-                                            id="create-location-checkbox"
-                                            name="location-checkbox"
-                                            value="true"
-                                            defaultChecked={updatingPlan?.location !== null}
-                                        />
-                                    </InputGroup>
-                                </Stack>
+    return (
+        <Stack spacing="containers">
+            <header className="header">
+                <h1>
+                    {user?.signInDetails?.loginId}'s plans
+                </h1>
+                <button
+                    className="button"
+                    onClick={signOut}
+                >
+                    Sign out
+                </button>
+            </header>
+            <main className="main">
+                <Stack spacing="components">
+
+                    <>
+                        {
+                            !isCreating && isUpdating === null &&
+                            <>
                                 <div className="button-row">
-                                    <button>Update</button>
                                     <button
-                                        type="button"
-                                        onClick={() => setIsUpdating(null)}
+                                        className="button"
+                                        onClick={() => {
+                                            setIsCreating(true);
+                                            setIsUpdating(null);
+                                        }}
                                     >
-                                        Cancel
+                                        Make a new plan
+                                    </button>
+                                    <button
+                                        className="button"
+                                        onClick={() => {
+                                            setTileView(!tileView);
+                                        }}
+                                    >
+                                        Toggle view
                                     </button>
                                 </div>
-                            </Stack>
-                        </form>
-                    }
-                </>
-                <>
-                    {
-                        isCreating &&
-                        <form onSubmit={(event) => createPlanSubmitHandler(event)}>
-                            <Stack spacing="medium">
-                                <h2>Create new plan</h2>
-                                <Stack spacing="small">
-                                    <InputGroup>
-                                        <label htmlFor="create-title">Title</label>
-                                        <input
-                                            defaultValue={''}
-                                            id="create-title"
-                                            name="title"
-                                            type="text"
-                                        />
-                                    </InputGroup>
-                                    <InputGroup>
-                                        <label htmlFor="create-content">Content</label>
-                                        <textarea
-                                            defaultValue={''}
-                                            id="create-content"
-                                            name="content"
-                                        />
-                                    </InputGroup>
-                                    <div className="form-row">
-                                        <InputGroup>
-                                            <label htmlFor="create-category">Category</label>
-                                            <select
-                                                id="create-category"
-                                                name="category"
-                                            >
-                                                <option value={''}>None</option>
-                                                {
-                                                    categories.map(category => (
-                                                        <option
-                                                            key={category.id}
-                                                            value={category.value}
+
+                                <ul
+                                    className={[
+                                        'plan-list',
+                                        tileView ? 'tile-view' : 'list-view',
+                                    ].join(' ')}
+                                >
+                                    {
+                                        plans
+                                            // .sort((a, b) => a.category === 'work' && b.category === 'home' ? -1 : 1)
+                                            .sort(sortByCategory)
+                                            .map((plan) => (
+                                                <li
+                                                    key={plan.id}
+                                                    className={[
+                                                        plan.location !== null ? 'wide' : '',
+                                                        plan.date !== null ? 'tall' : '',
+                                                    ].join(' ')}
+                                                >
+                                                    <p className="todo-title">{plan.title ? plan.title : plan.content ? plan.content.substring(0, 35) : ''}</p>
+                                                    <p className="todo-category">{categories.find(category => category.value === plan.category)?.displayName}</p>
+                                                    {
+                                                        !tileView &&
+                                                        <>
+                                                            <p className="todo-priority">{plan.priority}</p>
+                                                            <p>{plan.date} {plan.time}</p>
+                                                        </>
+                                                    }
+                                                    <div className="button-row">
+                                                        <button
+                                                            className="button"
+                                                            onClick={() => {
+                                                                setIsUpdating(plan.id);
+                                                                setUpdatingPlan(plan);
+                                                                setIsCreating(false);
+                                                            }}
                                                         >
-                                                            {category.displayName}
-                                                        </option>
-                                                    ))
-                                                }
-                                            </select>
+                                                            Edit
+                                                        </button>
+                                                        <button
+                                                            className="button"
+                                                            onClick={() => deletePlan(plan.id)}
+                                                        >
+                                                            Delete
+                                                        </button>
+                                                    </div>
+                                                </li>
+                                            ))}
+                                </ul>
+                            </>
+                        }
+                    </>
+                    <>
+                        {
+                            isUpdating &&
+                            <form onSubmit={(event) => updatePlanSubmitHandler(event)}>
+                                <Stack spacing="components">
+                                    <h2>Update plan {updatingPlan?.title || 'no title'}</h2>
+                                    <Stack spacing="content">
+                                        <InputGroup>
+                                            <label htmlFor="update-title">Title</label>
+                                            <input
+                                                defaultValue={updatingPlan?.title || ''}
+                                                id="update-title"
+                                                name="title"
+                                                type="text"
+                                            />
                                         </InputGroup>
                                         <InputGroup>
-                                            <label htmlFor="create-priority">Priority</label>
-                                            <select
-                                                id="create-priority"
-                                                name="priority"
+                                            <label htmlFor="update-content">Content</label>
+                                            <textarea
+                                                defaultValue={updatingPlan?.content || ''}
+                                                id="update-content"
+                                                name="content"
+                                            />
+                                        </InputGroup>
+                                        <div className="form-row">
+                                            <InputGroup>
+                                                <label htmlFor="update-category">Category</label>
+                                                <select
+                                                    id="update-category"
+                                                    name="category"
+                                                    defaultValue={updatingPlan?.category || ''}
+                                                >
+                                                    <option value={''}>None</option>
+                                                    {
+                                                        categories.map(category => (
+                                                            <option
+                                                                key={category.id}
+                                                                value={category.value}
+                                                            >
+                                                                {category.displayName}
+                                                            </option>
+                                                        ))
+                                                    }
+                                                </select>
+                                            </InputGroup>
+                                            <InputGroup>
+                                                <label htmlFor="update-priority">Priority</label>
+                                                <select
+                                                    id="update-priority"
+                                                    name="priority"
+                                                    defaultValue={updatingPlan?.priority || ''}
+                                                >
+                                                    <option value={''}>None</option>
+                                                    {
+                                                        prioritiesEnum.map(priority => (
+                                                            <option
+                                                                key={priority}
+                                                                value={priority}
+                                                            >
+                                                                {priority}
+                                                            </option>
+                                                        ))
+                                                    }
+                                                </select>
+                                            </InputGroup>
+                                        </div>
+                                        <InputGroup>
+                                            <label htmlFor="update-place">Place</label>
+                                            <input
+                                                defaultValue={updatingPlan?.place || ''}
+                                                id="update-place"
+                                                name="place"
+                                                type="text"
+                                            />
+                                        </InputGroup>
+                                        <InputGroup>
+                                            <label htmlFor="update-date">Date</label>
+                                            <input
+                                                defaultValue={updatingPlan?.date || ''}
+                                                id="update-date"
+                                                name="date"
+                                                type="date"
+                                            />
+                                        </InputGroup>
+                                        <InputGroup>
+                                            <label htmlFor="update-time">Time</label>
+                                            <input
+                                                defaultValue={updatingPlan?.time || ''}
+                                                id="update-time"
+                                                name="time"
+                                                type="time"
+                                            />
+                                        </InputGroup>
+                                        <InputGroup>
+                                            <label htmlFor="update-longitude">Longitude</label>
+                                            <input
+                                                value={updatingPlan?.location?.long || center[0]}
+                                                id="update-longitude"
+                                                name="longitude"
+                                                type="number"
+                                                readOnly={true}
+                                            />
+                                        </InputGroup>
+                                        <InputGroup>
+                                            <label htmlFor="update-latitude">Latitude</label>
+                                            <input
+                                                value={updatingPlan?.location?.lat || center[1]}
+                                                id="update-latitude"
+                                                name="latitude"
+                                                type="number"
+                                                readOnly={true}
+                                            />
+                                        </InputGroup>
+                                        <InputGroup>
+                                            <label htmlFor="create-location-checkbox">Save location</label>
+                                            <input
+                                                type="checkbox"
+                                                id="create-location-checkbox"
+                                                name="location-checkbox"
+                                                value="true"
+                                                defaultChecked={updatingPlan?.location !== null}
+                                            />
+                                        </InputGroup>
+                                    </Stack>
+                                    <div className="button-row">
+                                        <button
+                                            type="submit"
+                                            className="button"
+                                        >
+                                            Update plan
+                                        </button>
+                                        <button
+                                            className="button"
+                                            type="button"
+                                            onClick={() => setIsUpdating(null)}
+                                        >
+                                            Cancel
+                                        </button>
+                                    </div>
+                                </Stack>
+                            </form>
+                        }
+                    </>
+                    <>
+                        {
+                            isCreating &&
+                            <form onSubmit={(event) => createPlanSubmitHandler(event)}>
+                                <Stack spacing="components">
+                                    <h2>Create new plan</h2>
+                                    <Stack spacing="content">
+                                        <InputGroup>
+                                            <label htmlFor="create-title">Title</label>
+                                            <input
                                                 defaultValue={''}
-                                            >
-                                                <option value={''}>None</option>
-                                                {
-                                                    prioritiesEnum.map(priority => (
-                                                        <option
-                                                            key={priority}
-                                                            value={priority}
-                                                        >
-                                                            {priority}
-                                                        </option>
-                                                    ))
-                                                }
-                                            </select>
+                                                id="create-title"
+                                                name="title"
+                                                type="text"
+                                            />
                                         </InputGroup>
+                                        <InputGroup>
+                                            <label htmlFor="create-content">Content</label>
+                                            <textarea
+                                                defaultValue={''}
+                                                id="create-content"
+                                                name="content"
+                                            />
+                                        </InputGroup>
+                                        <div className="form-row">
+                                            <InputGroup>
+                                                <label htmlFor="create-category">Category</label>
+                                                <select
+                                                    id="create-category"
+                                                    name="category"
+                                                >
+                                                    <option value={''}>None</option>
+                                                    {
+                                                        categories.map(category => (
+                                                            <option
+                                                                key={category.id}
+                                                                value={category.value}
+                                                            >
+                                                                {category.displayName}
+                                                            </option>
+                                                        ))
+                                                    }
+                                                </select>
+                                            </InputGroup>
+                                            <InputGroup>
+                                                <label htmlFor="create-priority">Priority</label>
+                                                <select
+                                                    id="create-priority"
+                                                    name="priority"
+                                                    defaultValue={''}
+                                                >
+                                                    <option value={''}>None</option>
+                                                    {
+                                                        prioritiesEnum.map(priority => (
+                                                            <option
+                                                                key={priority}
+                                                                value={priority}
+                                                            >
+                                                                {priority}
+                                                            </option>
+                                                        ))
+                                                    }
+                                                </select>
+                                            </InputGroup>
+                                        </div>
+                                        <InputGroup>
+                                            <label htmlFor="create-place">Place</label>
+                                            <input
+                                                defaultValue={''}
+                                                id="update-place"
+                                                name="place"
+                                                type="text"
+                                            />
+                                        </InputGroup>
+                                        <InputGroup>
+                                            <label htmlFor="create-date">Date</label>
+                                            <input
+                                                defaultValue={updatingPlan?.date || ''}
+                                                id="create-date"
+                                                name="date"
+                                                type="date"
+                                            />
+                                        </InputGroup>
+                                        <InputGroup>
+                                            <label htmlFor="create-time">Time</label>
+                                            <input
+                                                defaultValue={updatingPlan?.time || ''}
+                                                id="create-time"
+                                                name="time"
+                                                type="time"
+                                            />
+                                        </InputGroup>
+                                        <InputGroup>
+                                            <label htmlFor="create-longitude">Longitude</label>
+                                            <input
+                                                value={center[0]}
+                                                id="create-longitude"
+                                                name="longitude"
+                                                type="number"
+                                                readOnly={true}
+                                            />
+                                        </InputGroup>
+                                        <InputGroup>
+                                            <label htmlFor="create-latitude">Latitude</label>
+                                            <input
+                                                value={center[1]}
+                                                id="create-latitude"
+                                                name="latitude"
+                                                type="number"
+                                                readOnly={true}
+                                            />
+                                        </InputGroup>
+                                        <InputGroup>
+                                            <label htmlFor="create-location-checkbox">Save location</label>
+                                            <input
+                                                type="checkbox"
+                                                id="create-location-checkbox"
+                                                name="location-checkbox"
+                                                value="true"
+                                                defaultChecked={false}
+                                            />
+                                        </InputGroup>
+                                    </Stack>
+                                    <div className="button-row">
+                                        <button
+                                            className="button"
+                                        >
+                                            Create plan
+                                        </button>
+                                        <button
+                                            className="button"
+                                            type="button"
+                                            onClick={() => setIsCreating(false)}
+                                        >
+                                            Cancel
+                                        </button>
                                     </div>
-                                    <InputGroup>
-                                        <label htmlFor="create-place">Place</label>
-                                        <input
-                                            defaultValue={''}
-                                            id="update-place"
-                                            name="place"
-                                            type="text"
-                                        />
-                                    </InputGroup>
-                                    <InputGroup>
-                                        <label htmlFor="create-date">Date</label>
-                                        <input
-                                            defaultValue={updatingPlan?.date || ''}
-                                            id="create-date"
-                                            name="date"
-                                            type="date"
-                                        />
-                                    </InputGroup>
-                                    <InputGroup>
-                                        <label htmlFor="create-time">Time</label>
-                                        <input
-                                            defaultValue={updatingPlan?.time || ''}
-                                            id="create-time"
-                                            name="time"
-                                            type="time"
-                                        />
-                                    </InputGroup>
-                                    <InputGroup>
-                                        <label htmlFor="create-longitude">Longitude</label>
-                                        <input
-                                            value={center[0]}
-                                            id="create-longitude"
-                                            name="longitude"
-                                            type="number"
-                                            readOnly={true}
-                                        />
-                                    </InputGroup>
-                                    <InputGroup>
-                                        <label htmlFor="create-latitude">Latitude</label>
-                                        <input
-                                            value={center[1]}
-                                            id="create-latitude"
-                                            name="latitude"
-                                            type="number"
-                                            readOnly={true}
-                                        />
-                                    </InputGroup>
-                                    <InputGroup>
-                                        <label htmlFor="create-location-checkbox">Save location</label>
-                                        <input
-                                            type="checkbox"
-                                            id="create-location-checkbox"
-                                            name="location-checkbox"
-                                            value="true"
-                                            defaultChecked={false}
-                                        />
-                                    </InputGroup>
                                 </Stack>
-                                <div className="button-row">
-                                    <button>Create</button>
-                                    <button
-                                        type="button"
-                                        onClick={() => setIsCreating(false)}
-                                    >
-                                        Cancel
-                                    </button>
-                                </div>
-                            </Stack>
-                        </form>
-                    }
-                </>
-                <div className="map-wrapper">
-                    <div
-                        id="map-container"
-                        ref={mapContainerRef}
-                    />
-                    {
-                        isCreating &&
-                        <div className="map-center"></div>
-                    }
-                    <button onClick={handleInitialize}>Center map</button>
-                </div>
-            </Stack>
-        </main>
+                            </form>
+                        }
+                    </>
+                    <div className="map-wrapper">
+                        <div
+                            id="map-container"
+                            ref={mapContainerRef}
+                        />
+                        {
+                            isCreating &&
+                            <div className="map-center"></div>
+                        }
+                        <button
+                            className="button"
+                            onClick={handleInitialize}
+                        >
+                            Center map
+                        </button>
+                    </div>
+                </Stack>
+            </main>
+        </Stack>
     );
 }
 

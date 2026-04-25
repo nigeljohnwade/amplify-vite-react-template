@@ -3,13 +3,16 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    gap: 1rem;
 }
 
-.stack.small {
-    gap: 0.5rem;
+.stack.content {
+    gap: var(--content);
 }
 
-.stack.large {
-    gap: 1.5rem;
+.stack.containers {
+    gap: var(--containers);
+}
+
+.stack.components {
+    gap: var(--components);
 }

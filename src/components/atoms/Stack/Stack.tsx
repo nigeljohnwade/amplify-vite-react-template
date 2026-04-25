@@ -4,10 +4,10 @@ import './Stack.css';
 
 const Stack = ({
     children,
-    spacing = 'medium',
+    spacing = 'content',
 }: {
     children: ReactElement | ReactElement[],
-    spacing?: 'small' | 'medium' | 'large',
+    spacing?: 'content' | 'containers' | 'components',
 }) => {
     return (
         <div className={['stack', spacing].join(' ')}>
