@@ -9,6 +9,10 @@ key can "create", "read","update", and "delete" any "Todo" records.
 This has been changed to restrict actions to the owner.
 =========================================================================*/
 const schema = a.schema({
+    Category: a.model({
+        value: a.string(),
+        displayName: a.string(),
+    }),
     Location: a.customType({
         lat: a.float(),
         long: a.float(),
