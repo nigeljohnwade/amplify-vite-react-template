@@ -10,8 +10,8 @@ import type { Schema } from '../amplify/data/resource';
 import { client } from './client';
 import { INITIAL_CENTER, INITIAL_ZOOM } from './constants';
 import type { PlanContext } from './context';
-import Stack from './components/atoms/Stack/Stack';
-import { InteractionControl } from './components/atoms/InteractionControl/InteractionControl.tsx';
+import Stack from 'components/atoms/Stack/Stack';
+import { InteractionControl } from 'components/atoms/InteractionControl/InteractionControl.tsx';
 
 function App() {
     const [plans, setPlans] = useState<Array<Schema['Plan']['type']>>([]);

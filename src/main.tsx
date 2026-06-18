@@ -3,11 +3,12 @@ import ReactDOM from 'react-dom/client';
 import { Authenticator } from '@aws-amplify/ui-react';
 import { BrowserRouter, Route, Routes } from 'react-router';
 
-import App from './App.tsx';
-import PlanList from './pages/PlanList/PlanList.tsx';
-import CreatePlan from './pages/CreatePlan/CreatePlan.tsx';
-import UpdatePlan from './pages/UpdatePlan/UpdatePlan.tsx';
 import './index.css';
+
+import App from './App.tsx';
+import PlanList from 'pages/PlanList/PlanList.tsx';
+import CreatePlan from 'pages/CreatePlan/CreatePlan.tsx';
+import UpdatePlan from 'pages/UpdatePlan/UpdatePlan.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>

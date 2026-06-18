@@ -4,8 +4,8 @@ import { Link } from 'react-router';
 import type { Schema } from '../../../amplify/data/resource';
 import { client } from '../../client';
 import { categories, INITIAL_CENTER } from '../../constants';
-import { usePlanContext } from '../../context';
-import { InteractionControl } from '../../components/atoms/InteractionControl/InteractionControl.tsx';
+import { usePlanContext } from 'context';
+import { InteractionControl } from 'components/atoms/InteractionControl/InteractionControl';
 
 const PlanList = () => {
     const {plans, flyTo} = usePlanContext();

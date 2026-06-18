@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router';
 import type { Schema } from '../../../amplify/data/resource';
 import { client } from '../../client';
 import { usePlanContext } from '../../context';
-import PlanForm, { PlanInput } from '../../components/molecules/PlanForm/PlanForm';
+import PlanForm, { PlanInput } from 'components/molecules/PlanForm/PlanForm';
 
 const UpdatePlan = () => {
     const {id} = useParams();

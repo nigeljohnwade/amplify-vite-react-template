@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 import { client } from '../../client';
 import { INITIAL_CENTER } from '../../constants';
 import { usePlanContext } from '../../context';
-import PlanForm, { PlanInput } from '../../components/molecules/PlanForm/PlanForm';
+import PlanForm, { PlanInput } from 'components/molecules/PlanForm/PlanForm';
 
 const CreatePlan = () => {
     const {center, flyTo} = usePlanContext();
