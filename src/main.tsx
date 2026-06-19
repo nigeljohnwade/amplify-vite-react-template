@@ -6,9 +6,9 @@ import { BrowserRouter, Route, Routes } from 'react-router';
 import './index.css';
 
 import App from './App.tsx';
-import PlanList from 'pages/PlanList/PlanList.tsx';
-import CreatePlan from 'pages/CreatePlan/CreatePlan.tsx';
-import UpdatePlan from 'pages/UpdatePlan/UpdatePlan.tsx';
+import PlanList from 'pages/PlanList/PlanList';
+import CreatePlan from 'pages/CreatePlan/CreatePlan';
+import UpdatePlan from 'pages/UpdatePlan/UpdatePlan';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>

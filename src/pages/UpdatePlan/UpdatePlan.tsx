@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
 import type { Schema } from '../../../amplify/data/resource';
-import { client } from '../../client';
-import { usePlanContext } from '../../context';
+import { client } from '../../amplify/client.ts';
+import { usePlanContext } from 'contexts/planContext.ts';
 import PlanForm, { PlanInput } from 'components/molecules/PlanForm/PlanForm';
 
 const UpdatePlan = () => {

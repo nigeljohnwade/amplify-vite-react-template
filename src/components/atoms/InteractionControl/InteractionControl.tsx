@@ -1,5 +1,7 @@
 import { FC, ReactNode } from 'react';
 
+import './InteractionControl.css';
+
 interface InteractionControlProps {
     ariaLabel?: string;
     children: ReactNode | ReactNode[];

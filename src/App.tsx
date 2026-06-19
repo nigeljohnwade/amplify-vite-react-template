@@ -7,11 +7,11 @@ import './App.css';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 import type { Schema } from '../amplify/data/resource';
-import { client } from './client';
-import { INITIAL_CENTER, INITIAL_ZOOM } from './constants';
-import type { PlanContext } from './context';
+import { client } from './amplify/client.ts';
+import { INITIAL_CENTER, INITIAL_ZOOM } from './configuration/constants.ts';
+import type { PlanContext } from 'contexts/planContext';
 import Stack from 'components/atoms/Stack/Stack';
-import { InteractionControl } from 'components/atoms/InteractionControl/InteractionControl.tsx';
+import { InteractionControl } from 'components/atoms/InteractionControl/InteractionControl';
 
 function App() {
     const [plans, setPlans] = useState<Array<Schema['Plan']['type']>>([]);

@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
-import { client } from '../../client';
-import { INITIAL_CENTER } from '../../constants';
-import { usePlanContext } from '../../context';
+import { client } from '../../amplify/client.ts';
+import { INITIAL_CENTER } from '../../configuration/constants.ts';
+import { usePlanContext } from 'contexts/planContext';
 import PlanForm, { PlanInput } from 'components/molecules/PlanForm/PlanForm';
 
 const CreatePlan = () => {

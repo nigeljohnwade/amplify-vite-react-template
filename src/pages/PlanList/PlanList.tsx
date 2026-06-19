@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 
 import type { Schema } from '../../../amplify/data/resource';
-import { client } from '../../client';
-import { categories, INITIAL_CENTER } from '../../constants';
-import { usePlanContext } from 'context';
+import { client } from 'amplify/client';
+import { categories, INITIAL_CENTER } from 'configuration/constants';
+import { usePlanContext } from 'contexts/planContext';
 import { InteractionControl } from 'components/atoms/InteractionControl/InteractionControl';
 import { StatusChip } from 'components/atoms/StatusChip/StatusChip';
 

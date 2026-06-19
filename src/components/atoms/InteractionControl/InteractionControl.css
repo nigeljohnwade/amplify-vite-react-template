@@ -1,0 +1,12 @@
+.button {
+    appearance: none;
+    border: none;
+    background-color: var(--light-button-background-color);
+    color: var(--light-button-color);
+    min-width: 6ch;
+    padding: 0.25rem 1rem;
+}
+
+a.button {
+    text-decoration: none;
+}

@@ -1,8 +1,8 @@
 import { FormEvent } from 'react';
 
 import type { Schema } from '../../../../amplify/data/resource';
-import { client } from '../../../client';
-import { categories } from '../../../constants';
+import { client } from '../../../amplify/client.ts';
+import { categories } from '../../../configuration/constants.ts';
 import InputGroup from '../../atoms/InputGroup/InputGroup';
 import Stack from '../../atoms/Stack/Stack';
 

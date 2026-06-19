@@ -1,6 +1,6 @@
 import { useOutletContext } from 'react-router';
 
-import type { Schema } from '../amplify/data/resource';
+import type { Schema } from '../../amplify/data/resource.ts';
 
 export type PlanContext = {
     plans: Array<Schema['Plan']['type']>;
