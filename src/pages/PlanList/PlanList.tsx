@@ -6,6 +6,7 @@ import { client } from '../../client';
 import { categories, INITIAL_CENTER } from '../../constants';
 import { usePlanContext } from 'context';
 import { InteractionControl } from 'components/atoms/InteractionControl/InteractionControl';
+import { StatusChip } from 'components/atoms/StatusChip/StatusChip';
 
 const PlanList = () => {
     const {plans, flyTo} = usePlanContext();
@@ -47,6 +48,15 @@ const PlanList = () => {
                 >
                     Toggle view
                 </InteractionControl>
+                <StatusChip>
+                    <span>{tileView ? 'Tile' : 'List'} view</span>
+                </StatusChip>
+                <StatusChip>
+                    <span>Sorted by  category</span>
+                </StatusChip>
+                <StatusChip>
+                    <span>No filters</span>
+                </StatusChip>
             </div>
 
             <ul
