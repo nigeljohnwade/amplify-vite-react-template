@@ -9,6 +9,7 @@ import App from './App.tsx';
 import PlanList from 'pages/PlanList/PlanList';
 import CreatePlan from 'pages/CreatePlan/CreatePlan';
 import UpdatePlan from 'pages/UpdatePlan/UpdatePlan';
+import ManageCategories from 'pages/CreateCategory/ManageCategories';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
@@ -30,6 +31,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                         <Route
                             path="update/:id"
                             element={<UpdatePlan/>}
+                        />
+                        <Route
+                            path="manage-categories"
+                            element={<ManageCategories/>}
                         />
                     </Route>
                 </Routes>

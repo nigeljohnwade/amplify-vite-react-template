@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAuthenticator } from '@aws-amplify/ui-react';
-import { Outlet, useLocation } from 'react-router';
+import { Link, Outlet, useLocation } from 'react-router';
 import mapboxgl from 'mapbox-gl';
 
 import './App.css';
@@ -15,6 +15,7 @@ import { InteractionControl } from 'components/atoms/InteractionControl/Interact
 
 function App() {
     const [plans, setPlans] = useState<Array<Schema['Plan']['type']>>([]);
+    const [categories, setCategories] = useState<Array<Schema['Category']['type']>>([]);
     const [center, setCenter] = useState<[number, number]>(INITIAL_CENTER);
     const mapRef = useRef<mapboxgl.Map | null>(null);
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
@@ -23,10 +24,16 @@ function App() {
     const isCreating = pathname === '/create';
 
     useEffect(() => {
-        const subscription = client.models.Plan.observeQuery().subscribe({
+        const planSubscription = client.models.Plan.observeQuery().subscribe({
             next: (data) => setPlans([...data.items]),
         });
-        return () => subscription.unsubscribe();
+        const categorySubscription = client.models.Category.observeQuery().subscribe({
+            next: (data) => setCategories([...data.items]),
+        });
+        return () => {
+            planSubscription.unsubscribe();
+            categorySubscription.unsubscribe();
+        };
     }, []);
 
     useEffect(() => {
@@ -72,7 +79,7 @@ function App() {
         mapRef.current?.flyTo(zoom !== undefined ? {center: coords, zoom} : {center: coords});
     }, []);
 
-    const context: PlanContext = {plans, center, flyTo};
+    const context: PlanContext = {plans, categories, center, flyTo};
 
     return (
         <Stack spacing="containers">
@@ -80,11 +87,25 @@ function App() {
                 <h1>
                     {user?.signInDetails?.loginId}'s plans
                 </h1>
-                <InteractionControl
-                    onClick={signOut}
-                >
-                    Sign out
-                </InteractionControl>
+                <div className="button-row">
+                    <Link
+                        className="button"
+                        to="/"
+                    >
+                        Plans
+                    </Link>
+                    <Link
+                        className="button"
+                        to="/manage-categories"
+                    >
+                        Manage categories
+                    </Link>
+                    <InteractionControl
+                        onClick={signOut}
+                    >
+                        Sign out
+                    </InteractionControl>
+                </div>
             </header>
             <main className="main">
                 <Stack spacing="components">

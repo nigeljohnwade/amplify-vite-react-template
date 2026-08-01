@@ -2,14 +2,14 @@ import { FormEvent } from 'react';
 
 import type { Schema } from '../../../../amplify/data/resource';
 import { client } from '../../../amplify/client.ts';
-import { categories } from '../../../configuration/constants.ts';
-import InputGroup from '../../atoms/InputGroup/InputGroup';
-import Stack from '../../atoms/Stack/Stack';
+import InputGroup from 'components/atoms/InputGroup/InputGroup';
+import Stack from 'components/atoms/Stack/Stack';
+import { usePlanContext } from 'contexts/planContext.ts';
 
 export type PlanInput = {
     content: string;
     title: string;
-    category: string | null;
+    categoryId: string;
     priority: Schema['Plan']['type']['priority'];
     place: string | null;
     time: string | null;
@@ -32,6 +32,7 @@ const PlanForm = ({
     onSubmit: (input: PlanInput) => void;
     onCancel: () => void;
 }) => {
+    const {categories} = usePlanContext();
     const prioritiesEnum = client.enums.PlanPriority.values();
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -39,7 +40,7 @@ const PlanForm = ({
         const formData = new FormData(event.currentTarget);
         const content = (formData.get('content') as string) || '';
         const title = formData.get('title') as string;
-        const category = formData.get('category') as string;
+        const categoryId = formData.get('categoryId') as string;
         const priority = formData.get('priority') as string;
         const place = formData.get('place') as string;
         const time = formData.get('time') as string;
@@ -48,7 +49,7 @@ const PlanForm = ({
         onSubmit({
             content,
             title,
-            category: category !== '' ? category : null,
+            categoryId: categoryId,
             priority: (priority !== '' ? priority : null) as PlanInput['priority'],
             place: place !== '' ? place : null,
             time: time !== '' ? time : null,
@@ -84,15 +85,15 @@ const PlanForm = ({
                             <label htmlFor="plan-category">Category</label>
                             <select
                                 id="plan-category"
-                                name="category"
-                                defaultValue={plan?.category || ''}
+                                name="categoryId"
+                                defaultValue={''}
                             >
-                                <option value={''}>None</option>
+                                <option value={''}>None selected</option>
                                 {
                                     categories.map(category => (
                                         <option
                                             key={category.id}
-                                            value={category.value}
+                                            value={category.id}
                                         >
                                             {category.displayName}
                                         </option>

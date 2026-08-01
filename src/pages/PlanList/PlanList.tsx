@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 
-import type { Schema } from '../../../amplify/data/resource';
 import { client } from 'amplify/client';
-import { categories, INITIAL_CENTER } from 'configuration/constants';
+import { INITIAL_CENTER } from 'configuration/constants';
 import { usePlanContext } from 'contexts/planContext';
 import { InteractionControl } from 'components/atoms/InteractionControl/InteractionControl';
 import { StatusChip } from 'components/atoms/StatusChip/StatusChip';
 
 const PlanList = () => {
-    const {plans, flyTo} = usePlanContext();
+    const {plans, categories, flyTo} = usePlanContext();
     const [tileView, setTileView] = useState<boolean>(true);
 
     useEffect(() => {
@@ -19,20 +18,6 @@ const PlanList = () => {
     function deletePlan(id: string) {
         client.models.Plan.delete({id});
     }
-
-    const sortByCategory = (a: Schema['Plan']['type'], b: Schema['Plan']['type']) => {
-        if (a.category && b.category) {
-            const _a = categories.find(category => category.value === a.category)!.id;
-            const _b = categories.find(category => category.value === b.category)!.id;
-            return _a > _b ? 1 : -1;
-        } else if (a.category && !b.category) {
-            return -1;
-        } else if (!a.category && b.category) {
-            return 1;
-        } else {
-            return 0;
-        }
-    };
 
     return (
         <>
@@ -52,7 +37,7 @@ const PlanList = () => {
                     <span>{tileView ? 'Tile' : 'List'} view</span>
                 </StatusChip>
                 <StatusChip>
-                    <span>Sorted by  category</span>
+                    <span>Not sorted</span>
                 </StatusChip>
                 <StatusChip>
                     <span>No filters</span>
@@ -67,7 +52,6 @@ const PlanList = () => {
             >
                 {
                     plans
-                        .sort(sortByCategory)
                         .map((plan) => (
                             <li
                                 key={plan.id}
@@ -77,7 +61,7 @@ const PlanList = () => {
                                 ].join(' ')}
                             >
                                 <p className="todo-title">{plan.title ? plan.title : plan.content ? plan.content.substring(0, 35) : ''}</p>
-                                <p className="todo-category">{categories.find(category => category.value === plan.category)?.displayName}</p>
+                                <p className="todo-category">{categories.find(category => category.id === plan.categoryId)?.displayName}</p>
                                 {
                                     !tileView &&
                                     <>

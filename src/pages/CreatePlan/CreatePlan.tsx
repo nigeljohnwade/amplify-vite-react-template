@@ -15,14 +15,13 @@ const CreatePlan = () => {
     }, [flyTo]);
 
     const handleSubmit = (input: PlanInput) => {
-        client.models.Plan.create(input);
-        navigate('/');
+        client.models.Plan.create(input).then(() => navigate('/'));
     };
 
     return (
         <PlanForm
             center={center}
-            heading="Create new plan"
+            heading="Create a new plan"
             submitLabel="Create plan"
             onSubmit={handleSubmit}
             onCancel={() => navigate('/')}

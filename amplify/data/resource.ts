@@ -13,9 +13,16 @@ const schema = a.schema({
         lat: a.float(),
         long: a.float(),
     }),
+    Category: a
+        .model({
+            displayName: a.string().required(),
+            plans: a.hasMany('Plan', 'categoryId'),
+        })
+        .authorization(allow => allow.authenticated()),
     Plan: a
         .model({
-            category: a.string(),
+            categoryId: a.id().required(),
+            category: a.belongsTo('Category', 'categoryId'),
             content: a.string(),
             isDone: a.boolean(),
             location: a.ref('Location'),
