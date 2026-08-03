@@ -8,7 +8,7 @@ import { InteractionControl } from 'components/atoms/InteractionControl/Interact
 import { StatusChip } from 'components/atoms/StatusChip/StatusChip';
 
 const PlanList = () => {
-    const {plans, categories, flyTo} = usePlanContext();
+    const {plans, flyTo} = usePlanContext();
     const [tileView, setTileView] = useState<boolean>(true);
 
     useEffect(() => {
@@ -61,7 +61,7 @@ const PlanList = () => {
                                 ].join(' ')}
                             >
                                 <p className="todo-title">{plan.title ? plan.title : plan.content ? plan.content.substring(0, 35) : ''}</p>
-                                <p className="todo-category">{categories.find(category => category.id === plan.categoryId)?.displayName}</p>
+                                <p className="todo-category">{plan.categoryId}</p>
                                 {
                                     !tileView &&
                                     <>

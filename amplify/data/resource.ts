@@ -15,9 +15,11 @@ const schema = a.schema({
     }),
     Category: a
         .model({
+            value: a.string().required(),
             displayName: a.string().required(),
             plans: a.hasMany('Plan', 'categoryId'),
         })
+        .identifier(['value'])
         .authorization(allow => allow.authenticated()),
     Plan: a
         .model({

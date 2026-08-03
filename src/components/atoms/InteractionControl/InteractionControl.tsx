@@ -6,7 +6,7 @@ interface InteractionControlProps {
     ariaLabel?: string;
     children: ReactNode | ReactNode[];
     href?: string;
-    onClick?: () => void;
+    onClick?: any;
     type?: 'button' | 'submit' | 'reset';
     variant?: 'linkButton' | 'textButton' | 'iconButton';
 }
