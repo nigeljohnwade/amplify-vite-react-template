@@ -4,8 +4,8 @@ import './ManageCategories.css';
 
 import { client } from '../../amplify/client.ts';
 import InputGroup from 'components/atoms/InputGroup/InputGroup';
-import { InteractionControl } from '../../components/atoms/InteractionControl/InteractionControl';
-import Stack from '../../components/atoms/Stack/Stack';
+import { InteractionControl } from 'components/atoms/InteractionControl/InteractionControl';
+import Stack from 'components/atoms/Stack/Stack';
 
 const ManageCategories = () => {
     const [categories, setCategories] = useState<any>([]);
