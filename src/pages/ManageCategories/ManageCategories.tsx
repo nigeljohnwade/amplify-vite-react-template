@@ -7,8 +7,14 @@ import InputGroup from 'components/atoms/InputGroup/InputGroup';
 import { InteractionControl } from 'components/atoms/InteractionControl/InteractionControl';
 import Stack from 'components/atoms/Stack/Stack';
 
+interface CategoriesWithPlans {
+    displayName: string,
+    value: string,
+    plans: any[],
+}
+
 const ManageCategories = () => {
-    const [categories, setCategories] = useState<any>([]);
+    const [categories, setCategories] = useState<CategoriesWithPlans[]>([]);
 
     useEffect(() => {
         const categorySubscription = client.models.Category.observeQuery({selectionSet: ['value', 'displayName', 'plans.*']}).subscribe({
