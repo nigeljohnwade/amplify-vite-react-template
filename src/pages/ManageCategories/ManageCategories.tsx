@@ -3,16 +3,15 @@ import { FormEvent, useEffect, useState } from 'react';
 import './ManageCategories.css';
 
 import { client } from '../../amplify/client.ts';
-import type { Schema } from '../../../amplify/data/resource.ts';
 import InputGroup from 'components/atoms/InputGroup/InputGroup';
 import { InteractionControl } from '../../components/atoms/InteractionControl/InteractionControl';
 import Stack from '../../components/atoms/Stack/Stack';
 
 const ManageCategories = () => {
-    const [categories, setCategories] = useState<Array<Schema['Category']['type']>>([]);
+    const [categories, setCategories] = useState<any>([]);
 
     useEffect(() => {
-        const categorySubscription = client.models.Category.observeQuery().subscribe({
+        const categorySubscription = client.models.Category.observeQuery({selectionSet: ['value', 'displayName', 'plans.*']}).subscribe({
             next: (data) => setCategories([...data.items]),
         });
         return () => {
@@ -73,11 +72,15 @@ const ManageCategories = () => {
                 <h2>Categories</h2>
                 <ul className="category-list">
                     {
-                        categories.map(category => (
+                        categories.map((category: any) => (
                             <li key={category.value}>
-                            <span className="display-name">
-                                {category.displayName} ({category.value})
-                            </span>
+                                <span className="display-name">
+                                    {category.displayName} ({category.value})
+                                </span>
+                                <span className="plan-count">
+                                    {category.plans.length}
+                                    {category.plans.length > 1 ? ' plans' : ' plan'}
+                                </span>
                                 <div className="button-row">
                                     <InteractionControl onClick={() => handleDelete(category.value)}>
                                         Delete
