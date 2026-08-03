@@ -70,6 +70,7 @@ const PlanForm = ({
                             id="plan-title"
                             name="title"
                             type="text"
+                            required
                         />
                     </InputGroup>
                     <InputGroup>
@@ -87,13 +88,14 @@ const PlanForm = ({
                                 id="plan-category"
                                 name="categoryId"
                                 defaultValue={''}
+                                required
                             >
                                 <option value={''}>None selected</option>
                                 {
                                     categories.map(category => (
                                         <option
-                                            key={category.id}
-                                            value={category.id}
+                                            key={category.value}
+                                            value={category.value}
                                         >
                                             {category.displayName}
                                         </option>
