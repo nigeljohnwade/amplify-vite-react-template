@@ -172,6 +172,12 @@ ul.plan-list.tile-view {
             grid-row: span 2;
         }
 
+        &.wide.tall {
+            aspect-ratio: 10 / 10;
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
         & > :first-child {
             flex-grow: 0;
             flex-shrink: 0;
