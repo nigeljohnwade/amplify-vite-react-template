@@ -15,6 +15,8 @@ export type PlanInput = {
     time: string | null;
     date: string | null;
     location: { lat: number; long: number } | null;
+    status: string | null;
+    isDone: boolean;
 };
 
 const PlanForm = ({
@@ -45,6 +47,9 @@ const PlanForm = ({
         const place = formData.get('place') as string;
         const time = formData.get('time') as string;
         const date = formData.get('date') as string;
+        const status = formData.get('status') as string;
+        const isDone = formData.get('isDone');
+        console.log(isDone);
         const saveLocation = formData.get('location-checkbox') === 'true';
         onSubmit({
             content,
@@ -55,6 +60,8 @@ const PlanForm = ({
             time: time !== '' ? time : null,
             date: date !== '' ? date : null,
             location: saveLocation ? {lat: center[1], long: center[0]} : null,
+            status: status !== '' ? status : null,
+            isDone: isDone === 'true' ? true : false,
         });
     };
 
@@ -87,7 +94,7 @@ const PlanForm = ({
                             <select
                                 id="plan-category"
                                 name="categoryId"
-                                defaultValue={''}
+                                defaultValue={plan?.categoryId}
                                 required
                             >
                                 <option value={''}>None selected</option>
@@ -179,6 +186,25 @@ const PlanForm = ({
                             name="location-checkbox"
                             value="true"
                             defaultChecked={plan?.location != null}
+                        />
+                    </InputGroup>
+                    <InputGroup>
+                        <label htmlFor="plan-status">Status</label>
+                        <input
+                            type="text"
+                            name="status"
+                            id="plan-status"
+                            defaultValue={plan?.status || ''}
+                        />
+                    </InputGroup>
+                    <InputGroup>
+                        <label htmlFor="plan-is-done-checkbox">Done?</label>
+                        <input
+                            type="checkbox"
+                            id="plan-is-done-checkbox"
+                            name="isDone"
+                            value="true"
+                            defaultChecked={plan?.isDone !== null ? plan?.isDone : false}
                         />
                     </InputGroup>
                 </Stack>
