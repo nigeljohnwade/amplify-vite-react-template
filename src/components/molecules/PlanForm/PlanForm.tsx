@@ -4,7 +4,7 @@ import type { Schema } from '../../../../amplify/data/resource';
 import { client } from '../../../amplify/client.ts';
 import InputGroup from 'components/atoms/InputGroup/InputGroup';
 import Stack from 'components/atoms/Stack/Stack';
-import { usePlanContext } from 'contexts/planContext.ts';
+import { Plan, usePlanContext } from 'contexts/planContext.ts';
 
 export type PlanInput = {
     content: string;
@@ -27,7 +27,7 @@ const PlanForm = ({
     onSubmit,
     onCancel,
 }: {
-    plan?: Schema['Plan']['type'] | null;
+    plan?: Plan | null;
     center: [number, number];
     heading: string;
     submitLabel: string;

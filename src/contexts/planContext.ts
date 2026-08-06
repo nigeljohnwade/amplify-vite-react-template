@@ -2,8 +2,28 @@ import { useOutletContext } from 'react-router';
 
 import type { Schema } from '../../amplify/data/resource.ts';
 
+export type Plan = {
+    category: {
+        displayName: string;
+        value: string;
+    }
+    categoryId: string
+    content: string
+    date: string
+    id: string
+    isDone: boolean
+    location: {
+        lat: number
+        long: number
+    }
+    place: string
+    priority: string
+    status: string
+    time: string
+    title: string
+}
 export type PlanContext = {
-    plans: Array<Schema['Plan']['type']>;
+    plans: Plan[]
     categories: Array<Schema['Category']['type']>
     // Current map center, used as the location to save against a plan.
     center: [number, number];

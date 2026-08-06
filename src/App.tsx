@@ -9,12 +9,12 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import type { Schema } from '../amplify/data/resource';
 import { client } from './amplify/client.ts';
 import { INITIAL_CENTER, INITIAL_ZOOM } from './configuration/constants.ts';
-import type { PlanContext } from 'contexts/planContext';
+import type { Plan, PlanContext } from 'contexts/planContext';
 import Stack from 'components/atoms/Stack/Stack';
 import { InteractionControl } from 'components/atoms/InteractionControl/InteractionControl';
 
 function App() {
-    const [plans, setPlans] = useState<Array<Schema['Plan']['type']>>([]);
+    const [plans, setPlans] = useState<Plan[]>([]);
     const [categories, setCategories] = useState<Array<Schema['Category']['type']>>([]);
     const [center, setCenter] = useState<[number, number]>(INITIAL_CENTER);
     const mapRef = useRef<mapboxgl.Map | null>(null);
@@ -24,8 +24,23 @@ function App() {
     const isCreating = pathname === '/create';
 
     useEffect(() => {
-        const planSubscription = client.models.Plan.observeQuery().subscribe({
-            next: (data) => setPlans([...data.items]),
+        const planSubscription = client.models.Plan.observeQuery({
+            selectionSet: [
+                'category.*',
+                'categoryId',
+                'content',
+                'date',
+                'id',
+                'isDone',
+                'location.*',
+                'place',
+                'priority',
+                'status',
+                'time',
+                'title',
+            ]
+        }).subscribe({
+            next: (data) => setPlans([...data.items as Plan[]]),
         });
         const categorySubscription = client.models.Category.observeQuery().subscribe({
             next: (data) => setCategories([...data.items]),
@@ -34,7 +49,7 @@ function App() {
             planSubscription.unsubscribe();
             categorySubscription.unsubscribe();
         };
-    }, []);
+    });
 
     useEffect(() => {
         mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_API_KEY;

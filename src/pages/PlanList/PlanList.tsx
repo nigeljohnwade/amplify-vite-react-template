@@ -60,13 +60,15 @@ const PlanList = () => {
                                     plan.date !== null ? 'tall' : '',
                                 ].join(' ')}
                             >
-                                <p className="todo-title">{plan.title ? plan.title : plan.content ? plan.content.substring(0, 35) : ''}</p>
-                                <p className="todo-category">{plan.categoryId}</p>
+                                <a href={`/view/${plan.id}`}>
+                                    <p className="todo-title">{plan.title ? plan.title : plan.content ? plan.content.substring(0, 35) : ''}</p>
+                                </a>
+                                <p className="todo-category">{plan.category?.displayName}</p>
                                 {
                                     !tileView &&
                                     <>
                                         <p className="todo-priority">{plan.priority}</p>
-                                        <p>{plan.date} {plan.time}</p>
+                                        {/*<p>{plan.date} {plan.time}</p>*/}
                                     </>
                                 }
                                 <div className="button-row">

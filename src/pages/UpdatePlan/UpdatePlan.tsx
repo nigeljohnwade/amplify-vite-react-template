@@ -1,23 +1,38 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-
-import type { Schema } from '../../../amplify/data/resource';
 import { client } from '../../amplify/client.ts';
-import { usePlanContext } from 'contexts/planContext.ts';
+import { Plan, usePlanContext } from 'contexts/planContext.ts';
 import PlanForm, { PlanInput } from 'components/molecules/PlanForm/PlanForm';
 
 const UpdatePlan = () => {
     const {id} = useParams();
     const {center, flyTo} = usePlanContext();
     const navigate = useNavigate();
-    const [plan, setPlan] = useState<Schema['Plan']['type'] | null>(null);
+    const [plan, setPlan] = useState<Plan | null>(null);
 
     useEffect(() => {
         if (!id) {
             return;
         }
-        client.models.Plan.get({id}).then(({data}) => {
-            setPlan(data);
+        client.models.Plan.get(
+            {id}, {
+                selectionSet: [
+                    'category.*',
+                    'categoryId',
+                    'content',
+                    'date',
+                    'id',
+                    'isDone',
+                    'location.*',
+                    'place',
+                    'priority',
+                    'status',
+                    'time',
+                    'title',
+                ]
+            },
+        ).then(({data}) => {
+            setPlan(data as Plan);
             if (data?.location?.long != null && data?.location?.lat != null) {
                 flyTo([data.location.long, data.location.lat]);
             }
@@ -28,8 +43,28 @@ const UpdatePlan = () => {
         if (!id) {
             return;
         }
-        client.models.Plan.update({id, ...input});
-        navigate('/');
+        client.models.Plan.update({id, ...input}).then(() => {
+            client.models.Plan.get(
+                {id: id},
+                {
+                    selectionSet: [
+                        'category.*',
+                        'categoryId',
+                        'content',
+                        'date',
+                        'id',
+                        'isDone',
+                        'location.*',
+                        'place',
+                        'priority',
+                        'status',
+                        'time',
+                        'title',
+                    ]
+                },
+            );
+            navigate(-1);
+        });
     };
 
     if (!plan) {
@@ -38,12 +73,12 @@ const UpdatePlan = () => {
 
     return (
         <PlanForm
-            plan={plan}
+            plan={plan as Plan}
             center={center}
             heading={`Update plan ${plan.title || 'no title'}`}
             submitLabel="Update plan"
             onSubmit={handleSubmit}
-            onCancel={() => navigate('/')}
+            onCancel={() => navigate(-1)}
         />
     );
 };
