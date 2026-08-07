@@ -9,3 +9,26 @@ import type { Schema } from '../../amplify/data/resource.ts';
 Amplify.configure(outputs);
 
 export const client = generateClient<Schema>();
+
+export const getPlan = async (id: string) => {
+    const plan = await client.models.Plan.get(
+        {id: id},
+        {
+            selectionSet: [
+                'category.*',
+                'categoryId',
+                'content',
+                'date',
+                'id',
+                'isDone',
+                'location.*',
+                'place',
+                'priority',
+                'status',
+                'time',
+                'title',
+            ]
+        },
+    );
+    return plan;
+};

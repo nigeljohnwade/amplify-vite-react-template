@@ -160,6 +160,7 @@ ul.plan-list.tile-view {
     padding: 0;
 
     & li {
+        position: relative;
         padding: 0.5rem;
         display: flex;
         flex-direction: column;
@@ -252,4 +253,12 @@ div.map-wrapper div.map-center {
     height: 1rem;
     border: 0.2rem solid white;
     border-radius: 50%;
+}
+
+.icon-row {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    display: flex;
+
 }

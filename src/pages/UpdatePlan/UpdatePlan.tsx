@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { client } from '../../amplify/client.ts';
-import { Plan, usePlanContext } from 'contexts/planContext.ts';
+import { client, getPlan } from 'amplify/client.ts';
+import { Plan, usePlanContext } from 'contexts/planContext';
 import PlanForm, { PlanInput } from 'components/molecules/PlanForm/PlanForm';
 
 const UpdatePlan = () => {
@@ -14,24 +14,7 @@ const UpdatePlan = () => {
         if (!id) {
             return;
         }
-        client.models.Plan.get(
-            {id}, {
-                selectionSet: [
-                    'category.*',
-                    'categoryId',
-                    'content',
-                    'date',
-                    'id',
-                    'isDone',
-                    'location.*',
-                    'place',
-                    'priority',
-                    'status',
-                    'time',
-                    'title',
-                ]
-            },
-        ).then(({data}) => {
+        getPlan(id).then(({data}) => {
             setPlan(data as Plan);
             if (data?.location?.long != null && data?.location?.lat != null) {
                 flyTo([data.location.long, data.location.lat]);
@@ -44,26 +27,9 @@ const UpdatePlan = () => {
             return;
         }
         client.models.Plan.update({id, ...input}).then(() => {
-            client.models.Plan.get(
-                {id: id},
-                {
-                    selectionSet: [
-                        'category.*',
-                        'categoryId',
-                        'content',
-                        'date',
-                        'id',
-                        'isDone',
-                        'location.*',
-                        'place',
-                        'priority',
-                        'status',
-                        'time',
-                        'title',
-                    ]
-                },
-            );
-            navigate(-1);
+            getPlan(id).then(() => {
+                navigate(-1);
+            });
         });
     };
 

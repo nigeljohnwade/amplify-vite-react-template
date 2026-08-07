@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { client } from '../../amplify/client.ts';
+import { client, getPlan } from 'amplify/client.ts';
 import { Link, useNavigate, useParams } from 'react-router';
 import Markdown from 'react-markdown';
 import Stack from 'components/atoms/Stack/Stack';
-import { Plan } from '../../contexts/planContext.ts';
-import { InteractionControl } from '../../components/atoms/InteractionControl/InteractionControl.tsx';
+import { Plan } from 'contexts/planContext';
+import { InteractionControl } from 'components/atoms/InteractionControl/InteractionControl';
 
 export const ViewPlan = () => {
     const navigate = useNavigate();
@@ -18,28 +18,6 @@ export const ViewPlan = () => {
     }
 
     useEffect(() => {
-        const getPlan = async (id: string) => {
-            const plan = await client.models.Plan.get(
-                {id: id},
-                {
-                    selectionSet: [
-                        'category.*',
-                        'categoryId',
-                        'content',
-                        'date',
-                        'id',
-                        'isDone',
-                        'location.*',
-                        'place',
-                        'priority',
-                        'status',
-                        'time',
-                        'title',
-                    ]
-                },
-            );
-            return plan;
-        };
         if (id) {
             getPlan(id).then((plan) => {
                 setPlanDetails(plan.data as Plan);
