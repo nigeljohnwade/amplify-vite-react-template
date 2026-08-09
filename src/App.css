@@ -125,6 +125,7 @@ ul.plan-list.list-view {
         display: flex;
         align-items: center;
         gap: var(--content);
+        position: relative;
 
         & > :first-child {
             flex-basis: 20em;
@@ -141,6 +142,11 @@ ul.plan-list.list-view {
             flex-basis: 6em;
             flex-grow: 0;
             text-transform: capitalize;
+        }
+
+        & > :nth-child(4) {
+            flex-basis: 6em;
+            flex-grow: 0;
         }
 
         /*& > :nth-child(4) {*/
@@ -195,9 +201,9 @@ ul.plan-list.tile-view {
             flex-grow: 1;
         }
 
-        & > :last-child(4) {
+        & .icon-row {
+            position: absolute
         }
-
     }
 }
 
@@ -208,13 +214,6 @@ ul.plan-list.tile-view {
     padding: var(--content) 0;
     border-block-end-width: 0.25rem;
     border-block-end-style: solid;
-}
-
-.button-row {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 0.5rem;
 }
 
 .form-row {
@@ -253,12 +252,4 @@ div.map-wrapper div.map-center {
     height: 1rem;
     border: 0.2rem solid white;
     border-radius: 50%;
-}
-
-.icon-row {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    display: flex;
-
 }

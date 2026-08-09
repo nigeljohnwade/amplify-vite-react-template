@@ -6,6 +6,8 @@ import { INITIAL_CENTER } from 'configuration/constants';
 import { usePlanContext } from 'contexts/planContext';
 import { InteractionControl } from 'components/atoms/InteractionControl/InteractionControl';
 import { StatusChip } from 'components/atoms/StatusChip/StatusChip';
+import { ButtonRow } from 'components/atoms/ButtonRow/ButtonRow';
+import { IconRow } from 'components/atoms/IconRow/IconRow';
 
 const PlanList = () => {
     const {plans, flyTo} = usePlanContext();
@@ -21,7 +23,7 @@ const PlanList = () => {
 
     return (
         <>
-            <div className="button-row">
+            <ButtonRow>
                 <Link
                     className="button"
                     to="/create"
@@ -42,8 +44,7 @@ const PlanList = () => {
                 <StatusChip>
                     <span>No filters</span>
                 </StatusChip>
-            </div>
-
+            </ButtonRow>
             <ul
                 className={[
                     'plan-list',
@@ -71,16 +72,15 @@ const PlanList = () => {
                                         {/*<p>{plan.date} {plan.time}</p>*/}
                                     </>
                                 }
-                                <div className="icon-row">
-
+                                <IconRow>
                                     {
                                         plan.location !== null &&
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             aria-hidden="true"
                                             role="img"
-                                            width="64"
-                                            height="64"
+                                            width="1em"
+                                            height="1em"
                                             viewBox="0 0 24 24"
                                         >
                                             //https://opensvg.dev/icons
@@ -96,8 +96,8 @@ const PlanList = () => {
                                             xmlns="http://www.w3.org/2000/svg"
                                             aria-hidden="true"
                                             role="img"
-                                            width="64"
-                                            height="64"
+                                            width="1em"
+                                            height="1em"
                                             viewBox="0 0 24 24"
                                         >
                                             <g fill="none">
@@ -114,7 +114,44 @@ const PlanList = () => {
                                             </g>
                                         </svg>
                                     }
-                                </div>
+                                    {
+                                        plan.time !== null &&
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            aria-hidden="true"
+                                            role="img"
+                                            width="1em"
+                                            height="1em"
+                                            viewBox="0 0 48 48"
+                                        >
+                                            <defs>
+                                                <mask id="iconifyReact183">
+                                                    <g
+                                                        fill="none"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth="4"
+                                                    >
+                                                        <path
+                                                            fill="#fff"
+                                                            stroke="#fff"
+                                                            d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z"
+                                                        ></path>
+                                                        <path
+                                                            stroke="#000"
+                                                            strokeLinecap="round"
+                                                            d="M24.008 12v12.01l8.479 8.48"
+                                                        ></path>
+                                                    </g>
+                                                </mask>
+                                            </defs>
+                                            <path
+                                                fill="currentColor"
+                                                d="M0 0h48v48H0z"
+                                                mask="url(#iconifyReact183)"
+                                            ></path>
+                                        </svg>
+                                    }
+                                </IconRow>
                                 <div className="button-row">
                                     <Link
                                         className="button"
