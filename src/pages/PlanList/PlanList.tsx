@@ -75,7 +75,7 @@ const PlanList = () => {
                                     {
                                         !tileView &&
                                         <>
-                                            <p className="plan-priority">{plan.priority}</p>
+                                            <p className="plan-priority">{plan.priority || <>&nbsp;</>}</p>
                                             {/*<p>{plan.date} {plan.time}</p>*/}
                                         </>
                                     }

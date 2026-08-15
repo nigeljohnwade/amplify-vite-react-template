@@ -17,7 +17,7 @@ ul.plan-list.list-view {
             flex-grow: 1;
             flex-shrink: 0;
 
-            &::before {
+            & a::before {
                 content: '';
                 display: block;
                 position: absolute;
@@ -30,18 +30,18 @@ ul.plan-list.list-view {
             position: static;
         }
 
-        & > .plan-category {
+        & .plan-category {
             flex-basis: 10em;
             flex-grow: 0;
         }
 
-        & > .plan-priority {
+        & .plan-priority {
             flex-basis: 6em;
             flex-grow: 0;
             text-transform: capitalize;
         }
 
-        & > :nth-child(4) {
+        & :nth-child(4) {
             flex-basis: 6em;
             flex-grow: 0;
         }
