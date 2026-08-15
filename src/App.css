@@ -48,6 +48,10 @@ h5 {
     font-size: .75em;
 }
 
+button {
+    cursor: pointer;
+}
+
 /* Custom properties */
 
 :root {
@@ -113,99 +117,6 @@ body {
     flex-wrap: wrap;
 }
 
-
-ul.plan-list.list-view {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: var(--content);
-    padding: 0;
-
-    & li {
-        display: flex;
-        align-items: center;
-        gap: var(--content);
-        position: relative;
-
-        & > :first-child {
-            flex-basis: 20em;
-            flex-grow: 1;
-            flex-shrink: 0;
-        }
-
-        & > :nth-child(2) {
-            flex-basis: 10em;
-            flex-grow: 0;
-        }
-
-        & > :nth-child(3) {
-            flex-basis: 6em;
-            flex-grow: 0;
-            text-transform: capitalize;
-        }
-
-        & > :nth-child(4) {
-            flex-basis: 6em;
-            flex-grow: 0;
-        }
-
-        /*& > :nth-child(4) {*/
-        /*    flex-basis: 8em;*/
-        /*}*/
-
-    }
-}
-
-ul.plan-list.tile-view {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(10em, 1fr));
-    grid-template-rows: repeat(auto-fill, minmax(10em, 1fr));
-    flex-direction: column;
-    gap: var(--content);
-    padding: 0;
-
-    & li {
-        position: relative;
-        padding: 0.5rem;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: var(--content);
-        border: solid 0.0625rem black;
-        aspect-ratio: 1 / 1;
-
-        &.wide {
-            aspect-ratio: 21 / 10;
-            grid-column: span 2;
-        }
-
-        &.tall {
-            aspect-ratio: 10 / 21;
-            grid-row: span 2;
-        }
-
-        &.wide.tall {
-            aspect-ratio: 10 / 10;
-            grid-column: span 2;
-            grid-row: span 2;
-        }
-
-        & > :first-child {
-            flex-grow: 0;
-            flex-shrink: 0;
-        }
-
-        & > :nth-child(2) {
-            flex-grow: 1;
-        }
-
-        & .icon-row {
-            position: absolute
-        }
-    }
-}
 
 .header {
     display: flex;

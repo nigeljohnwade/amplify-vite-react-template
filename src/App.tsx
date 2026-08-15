@@ -49,7 +49,7 @@ function App() {
             planSubscription.unsubscribe();
             categorySubscription.unsubscribe();
         };
-    });
+    }, []);
 
     useEffect(() => {
         mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_API_KEY;
