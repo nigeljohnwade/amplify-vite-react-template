@@ -12,7 +12,7 @@ import { ButtonRow } from 'components/atoms/ButtonRow/ButtonRow';
 import { IconRow } from 'components/atoms/IconRow/IconRow';
 
 const PlanList = () => {
-    const {plans, flyTo} = usePlanContext();
+    const {plans, flyTo, categories} = usePlanContext();
     const [tileView, setTileView] = useState<boolean>(true);
 
     useEffect(() => {
@@ -69,7 +69,9 @@ const PlanList = () => {
                                             <p className="todo-title">{plan.title}</p>
                                         </a>
                                     </h2>
-                                    <p className="plan-category">{plan.category.displayName}</p>
+                                    <p className="plan-category">{plan.category?.displayName
+                                        ? plan.category?.displayName
+                                        : categories.find(category => category.value = plan.categoryId)?.displayName}</p>
                                     {
                                         !tileView &&
                                         <>

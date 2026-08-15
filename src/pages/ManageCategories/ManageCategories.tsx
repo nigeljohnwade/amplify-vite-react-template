@@ -84,8 +84,9 @@ const ManageCategories = () => {
                                     {category.displayName} ({category.value})
                                 </span>
                                 <span className="plan-count">
-                                    {category.plans.length}
-                                    {category.plans.length > 1 ? ' plans' : ' plan'}
+                                    {category.plans && category.plans?.length > 0 &&
+                                        <>{category.plans?.length} {category.plans?.length > 1 ? ' plans' : ' plan'}</>
+                                    }
                                 </span>
                                 <div className="button-row">
                                     <InteractionControl onClick={() => handleDelete(category.value)}>
