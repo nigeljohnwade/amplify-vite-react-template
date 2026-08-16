@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { Link } from 'react-router';
 
 import './PlanList.css';
@@ -6,6 +6,7 @@ import './PlanList.css';
 import { client } from 'amplify/client';
 import { INITIAL_CENTER } from 'configuration/constants';
 import { usePlanContext } from 'contexts/planContext';
+import UiContext from 'contexts/UiContext';
 import { InteractionControl } from 'components/atoms/InteractionControl/InteractionControl';
 import { StatusChip } from 'components/atoms/StatusChip/StatusChip';
 import { ButtonRow } from 'components/atoms/ButtonRow/ButtonRow';
@@ -13,7 +14,7 @@ import { IconRow } from 'components/atoms/IconRow/IconRow';
 
 const PlanList = () => {
     const {plans, flyTo, categories} = usePlanContext();
-    const [tileView, setTileView] = useState<boolean>(true);
+    const {planView, setPlanView} = useContext(UiContext);
 
     useEffect(() => {
         flyTo(INITIAL_CENTER);
@@ -33,12 +34,12 @@ const PlanList = () => {
                     Make a new plan
                 </Link>
                 <InteractionControl
-                    onClick={() => setTileView(!tileView)}
+                    onClick={() => setPlanView(planView !== 'tile' ? 'tile' : 'list')}
                 >
                     Toggle view
                 </InteractionControl>
                 <StatusChip>
-                    <span>{tileView ? 'Tile' : 'List'} view</span>
+                    <span>{planView === 'tile' ? 'Tile' : 'List'} view</span>
                 </StatusChip>
                 <StatusChip>
                     <span>Not sorted</span>
@@ -50,7 +51,7 @@ const PlanList = () => {
             <ul
                 className={[
                     'plan-list',
-                    tileView ? 'tile-view' : 'list-view',
+                    planView === 'tile' ? 'tile-view' : 'list-view',
                 ].join(' ')}
             >
                 {
@@ -73,7 +74,7 @@ const PlanList = () => {
                                         ? plan.category?.displayName
                                         : categories.find(category => category.value = plan.categoryId)?.displayName}</p>
                                     {
-                                        !tileView &&
+                                        planView !== 'tile' &&
                                         <>
                                             <p className="plan-priority">{plan.priority || <>&nbsp;</>}</p>
                                             {/*<p>{plan.date} {plan.time}</p>*/}

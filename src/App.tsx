@@ -8,13 +8,15 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 
 import type { Schema } from '../amplify/data/resource';
 import { client } from 'amplify/client.ts';
-import { INITIAL_CENTER, INITIAL_ZOOM } from 'configuration/constants.ts';
+import { DEFAULT_LIST_VIEW, INITIAL_CENTER, INITIAL_ZOOM } from 'configuration/constants.ts';
 import type { Plan, PlanContext } from 'contexts/planContext';
 import Stack from 'components/atoms/Stack/Stack';
 import { InteractionControl } from 'components/atoms/InteractionControl/InteractionControl';
+import UiContext from './contexts/UiContext.ts';
 
 function App() {
     const [plans, setPlans] = useState<Plan[]>([]);
+    const [planView, setPlanView] = useState<'list' | 'tile'>(DEFAULT_LIST_VIEW);
     const [categories, setCategories] = useState<Array<Schema['Category']['type']>>([]);
     const [center, setCenter] = useState<[number, number]>(INITIAL_CENTER);
     const mapRef = useRef<mapboxgl.Map | null>(null);
@@ -97,52 +99,59 @@ function App() {
     const context: PlanContext = {plans, categories, center, flyTo};
 
     return (
-        <Stack spacing="containers">
-            <header className="header">
-                <h1>
-                    {user?.signInDetails?.loginId}'s plans
-                </h1>
-                <div className="button-row">
-                    <Link
-                        className="button"
-                        to="/"
-                    >
-                        Plans
-                    </Link>
-                    <Link
-                        className="button"
-                        to="/manage-categories"
-                    >
-                        Manage categories
-                    </Link>
-                    <InteractionControl
-                        onClick={signOut}
-                    >
-                        Sign out
-                    </InteractionControl>
-                </div>
-            </header>
-            <main className="main">
-                <Stack spacing="components">
-                    <Outlet context={context}/>
-                    <div className="map-wrapper">
-                        <div
-                            id="map-container"
-                            ref={mapContainerRef}
-                        />
-                        {
-                            isCreating &&
-                            <div className="map-center"></div>
-                        }
-                        <InteractionControl
-                            onClick={() => flyTo(INITIAL_CENTER, INITIAL_ZOOM)}
+        <UiContext.Provider
+            value={{
+                planView: planView,
+                setPlanView: setPlanView,
+            }}
+        >
+            <Stack spacing="containers">
+                <header className="header">
+                    <h1>
+                        {user?.signInDetails?.loginId}'s plans
+                    </h1>
+                    <div className="button-row">
+                        <Link
+                            className="button"
+                            to="/"
                         >
-                            Center map
+                            Plans
+                        </Link>
+                        <Link
+                            className="button"
+                            to="/manage-categories"
+                        >
+                            Manage categories
+                        </Link>
+                        <InteractionControl
+                            onClick={signOut}
+                        >
+                            Sign out
                         </InteractionControl>
                     </div>
-                </Stack>
-            </main>
-        </Stack>
+                </header>
+                <main className="main">
+                    <Stack spacing="components">
+                        <Outlet context={context}/>
+                        <div className="map-wrapper">
+                            <div
+                                id="map-container"
+                                ref={mapContainerRef}
+                            />
+                            {
+                                isCreating &&
+                                <div className="map-center"></div>
+                            }
+                            <InteractionControl
+                                onClick={() => flyTo(INITIAL_CENTER, INITIAL_ZOOM)}
+                            >
+                                Center map
+                            </InteractionControl>
+                        </div>
+                    </Stack>
+                </main>
+            </Stack>
+        </UiContext.Provider>
     );
 }
 
