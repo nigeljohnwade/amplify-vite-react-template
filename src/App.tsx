@@ -1,6 +1,15 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+} from 'react';
 import { useAuthenticator } from '@aws-amplify/ui-react';
-import { Link, Outlet, useLocation } from 'react-router';
+import {
+    Link,
+    Outlet,
+    useLocation
+} from 'react-router';
 import mapboxgl from 'mapbox-gl';
 
 import './App.css';
@@ -8,8 +17,15 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 
 import type { Schema } from '../amplify/data/resource';
 import { client } from 'amplify/client.ts';
-import { DEFAULT_LIST_VIEW, INITIAL_CENTER, INITIAL_ZOOM } from 'configuration/constants.ts';
-import type { Plan, PlanContext } from 'contexts/planContext';
+import {
+    DEFAULT_LIST_VIEW,
+    INITIAL_CENTER,
+    INITIAL_ZOOM
+} from 'configuration/constants.ts';
+import type {
+    Plan,
+    PlanContext
+} from 'contexts/planContext';
 import Stack from 'components/atoms/Stack/Stack';
 import { InteractionControl } from 'components/atoms/InteractionControl/InteractionControl';
 import UiContext from './contexts/UiContext.ts';

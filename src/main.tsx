@@ -1,7 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Authenticator } from '@aws-amplify/ui-react';
-import { BrowserRouter, Route, Routes } from 'react-router';
+import {
+    BrowserRouter,
+    Route,
+    Routes
+} from 'react-router';
 
 import './index.css';
 

@@ -1,11 +1,11 @@
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 
 import './InputGroup.css';
 
 const InputGroup = ({
     children,
 }: {
-    children: ReactElement | ReactElement[],
+    children: ReactNode | ReactNode[],
 }) => {
     return (
         <div className="input-group">

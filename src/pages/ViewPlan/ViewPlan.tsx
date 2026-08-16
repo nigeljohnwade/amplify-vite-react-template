@@ -1,7 +1,18 @@
-import { useEffect, useState } from 'react';
-import { client, getPlan } from 'amplify/client.ts';
-import { Link, useNavigate, useParams } from 'react-router';
+import {
+    useEffect,
+    useState
+} from 'react';
+import {
+    Link,
+    useNavigate,
+    useParams
+} from 'react-router';
 import Markdown from 'react-markdown';
+
+import {
+    client,
+    getPlan
+} from 'amplify/client.ts';
 import Stack from 'components/atoms/Stack/Stack';
 import { Plan } from 'contexts/planContext';
 import { InteractionControl } from 'components/atoms/InteractionControl/InteractionControl';
