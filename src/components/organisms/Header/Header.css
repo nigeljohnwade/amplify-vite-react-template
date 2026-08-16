@@ -1,0 +1,9 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    width: 100%;
+    padding: var(--content) 0;
+    border-block-end-width: 0.25rem;
+    border-block-end-style: solid;
+}

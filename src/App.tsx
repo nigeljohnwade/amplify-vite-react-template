@@ -4,9 +4,7 @@ import {
     useRef,
     useState,
 } from 'react';
-import { useAuthenticator } from '@aws-amplify/ui-react';
 import {
-    Link,
     Outlet,
     useLocation
 } from 'react-router';
@@ -28,7 +26,8 @@ import type {
 } from 'contexts/planContext';
 import Stack from 'components/atoms/Stack/Stack';
 import { InteractionControl } from 'components/atoms/InteractionControl/InteractionControl';
-import UiContext from './contexts/UiContext.ts';
+import UiContext from 'contexts/UiContext.ts';
+import Header from 'components/organisms/Header/Header';
 
 function App() {
     const [plans, setPlans] = useState<Plan[]>([]);
@@ -37,7 +36,6 @@ function App() {
     const [center, setCenter] = useState<[number, number]>(INITIAL_CENTER);
     const mapRef = useRef<mapboxgl.Map | null>(null);
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
-    const {user, signOut} = useAuthenticator();
     const {pathname} = useLocation();
     const isCreating = pathname === '/create';
 
@@ -122,30 +120,7 @@ function App() {
             }}
         >
             <Stack spacing="containers">
-                <header className="header">
-                    <h1>
-                        {user?.signInDetails?.loginId}'s plans
-                    </h1>
-                    <div className="button-row">
-                        <Link
-                            className="button"
-                            to="/"
-                        >
-                            Plans
-                        </Link>
-                        <Link
-                            className="button"
-                            to="/manage-categories"
-                        >
-                            Manage categories
-                        </Link>
-                        <InteractionControl
-                            onClick={signOut}
-                        >
-                            Sign out
-                        </InteractionControl>
-                    </div>
-                </header>
+                <Header/>
                 <main className="main">
                     <Stack spacing="components">
                         <Outlet context={context}/>

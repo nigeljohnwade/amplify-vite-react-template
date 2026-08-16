@@ -117,16 +117,6 @@ body {
     flex-wrap: wrap;
 }
 
-
-.header {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    padding: var(--content) 0;
-    border-block-end-width: 0.25rem;
-    border-block-end-style: solid;
-}
-
 .form-row {
     display: flex;
     flex-direction: row;
