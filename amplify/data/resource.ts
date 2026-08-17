@@ -1,4 +1,8 @@
-import { a, type ClientSchema, defineData } from '@aws-amplify/backend';
+import {
+    a,
+    type ClientSchema,
+    defineData
+} from '@aws-amplify/backend';
 
 /*== STEP 1 ===============================================================
 The section below originally created a Todo database table with a "content"
@@ -38,7 +42,9 @@ const schema = a.schema({
         .authorization(allow => [allow.owner()]),
     Setting: a
         .model({
+            id: a.id().required(),
             theme: a.string(),
+            planView: a.enum(['list', 'tile'])
         })
         .authorization(allow => [allow.owner()]),
 });

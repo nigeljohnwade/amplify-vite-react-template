@@ -2,6 +2,7 @@ import {
     useContext,
     useEffect
 } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router';
 
 import './PlanList.css';
@@ -14,10 +15,33 @@ import { InteractionControl } from 'components/atoms/InteractionControl/Interact
 import { StatusChip } from 'components/atoms/StatusChip/StatusChip';
 import { ButtonRow } from 'components/atoms/ButtonRow/ButtonRow';
 import { IconRow } from 'components/atoms/IconRow/IconRow';
+import { useAuthenticator } from '@aws-amplify/ui-react';
+import { type Schema } from '../../../amplify/data/resource';
 
 const PlanList = () => {
     const {plans, flyTo, categories} = usePlanContext();
     const {planView, setPlanView} = useContext(UiContext);
+    const [settings, setSettings] = useState<Schema['Setting']['type'] | null>();
+    const {user} = useAuthenticator();
+
+    useEffect(() => {
+        client.models.Setting.get({id: user.userId})
+            .then(data => setSettings(data.data));
+    }, [user]);
+
+    useEffect(() => {
+        if (settings && settings.planView) {
+            setPlanView(settings.planView);
+        }
+    }, [settings]);
+
+    useEffect(() => {
+        if (settings) {
+            client.models.Setting.update({id: user.userId, planView: planView});
+        } else {
+            client.models.Setting.create({id: user.userId, planView: planView});
+        }
+    }, [planView]);
 
     useEffect(() => {
         flyTo(INITIAL_CENTER);
@@ -37,7 +61,9 @@ const PlanList = () => {
                     Make a new plan
                 </Link>
                 <InteractionControl
-                    onClick={() => setPlanView(planView !== 'tile' ? 'tile' : 'list')}
+                    onClick={() => {
+                        setPlanView(planView !== 'tile' ? 'tile' : 'list');
+                    }}
                 >
                     Toggle view
                 </InteractionControl>
