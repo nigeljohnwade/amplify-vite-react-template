@@ -6,10 +6,10 @@ import {
 import './ButtonRow.css';
 
 interface ButtonRowProps {
-    children: ReactNode[];
+    children: ReactNode | ReactNode[];
 }
 
-export const ButtonRow: FC<ButtonRowProps> = ({
+const ButtonRow: FC<ButtonRowProps> = ({
     children
 }) => {
     return (
@@ -18,3 +18,5 @@ export const ButtonRow: FC<ButtonRowProps> = ({
         </div>
     );
 };
+
+export default ButtonRow;

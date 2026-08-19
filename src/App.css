@@ -117,12 +117,6 @@ body {
     flex-wrap: wrap;
 }
 
-.form-row {
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-}
-
 select[name="priority"] {
     text-transform: capitalize;
 }

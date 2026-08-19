@@ -19,7 +19,7 @@ import {
     DEFAULT_LIST_VIEW,
     INITIAL_CENTER,
     INITIAL_ZOOM
-} from 'configuration/constants.ts';
+} from 'configuration/constants';
 import type {
     Plan,
     PlanContext

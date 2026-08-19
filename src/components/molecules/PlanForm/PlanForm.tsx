@@ -1,13 +1,15 @@
-import { FormEvent } from 'react';
+import { SubmitEvent } from 'react';
 
 import type { Schema } from '../../../../amplify/data/resource';
-import { client } from '../../../amplify/client.ts';
+import { client } from 'amplify/client';
 import InputGroup from 'components/atoms/InputGroup/InputGroup';
 import Stack from 'components/atoms/Stack/Stack';
 import {
     Plan,
     usePlanContext
-} from 'contexts/planContext.ts';
+} from 'contexts/planContext';
+import FormRow from 'components/atoms/FormRow/FormRow';
+import ButtonRow from 'components/atoms/ButtonRow/ButtonRow';
 
 export type PlanInput = {
     content: string;
@@ -40,7 +42,7 @@ const PlanForm = ({
     const {categories} = usePlanContext();
     const prioritiesEnum = client.enums.PlanPriority.values();
 
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const content = (formData.get('content') as string) || '';
@@ -91,7 +93,7 @@ const PlanForm = ({
                             name="content"
                         />
                     </InputGroup>
-                    <div className="form-row">
+                    <FormRow>
                         <InputGroup>
                             <label htmlFor="plan-category">Category</label>
                             <select
@@ -133,7 +135,27 @@ const PlanForm = ({
                                 }
                             </select>
                         </InputGroup>
-                    </div>
+                    </FormRow>
+                    <FormRow>
+                        <InputGroup>
+                            <label htmlFor="plan-date">Date</label>
+                            <input
+                                defaultValue={plan?.date || ''}
+                                id="plan-date"
+                                name="date"
+                                type="date"
+                            />
+                        </InputGroup>
+                        <InputGroup>
+                            <label htmlFor="plan-time">Time</label>
+                            <input
+                                defaultValue={plan?.time || ''}
+                                id="plan-time"
+                                name="time"
+                                type="time"
+                            />
+                        </InputGroup>
+                    </FormRow>
                     <InputGroup>
                         <label htmlFor="plan-place">Place</label>
                         <input
@@ -143,44 +165,29 @@ const PlanForm = ({
                             type="text"
                         />
                     </InputGroup>
-                    <InputGroup>
-                        <label htmlFor="plan-date">Date</label>
-                        <input
-                            defaultValue={plan?.date || ''}
-                            id="plan-date"
-                            name="date"
-                            type="date"
-                        />
-                    </InputGroup>
-                    <InputGroup>
-                        <label htmlFor="plan-time">Time</label>
-                        <input
-                            defaultValue={plan?.time || ''}
-                            id="plan-time"
-                            name="time"
-                            type="time"
-                        />
-                    </InputGroup>
-                    <InputGroup>
-                        <label htmlFor="plan-longitude">Longitude</label>
-                        <input
-                            value={plan?.location?.long || center[0]}
-                            id="plan-longitude"
-                            name="longitude"
-                            type="number"
-                            readOnly={true}
-                        />
-                    </InputGroup>
-                    <InputGroup>
-                        <label htmlFor="plan-latitude">Latitude</label>
-                        <input
-                            value={plan?.location?.lat || center[1]}
-                            id="plan-latitude"
-                            name="latitude"
-                            type="number"
-                            readOnly={true}
-                        />
-                    </InputGroup>
+                    <FormRow>
+
+                        <InputGroup>
+                            <label htmlFor="plan-longitude">Longitude</label>
+                            <input
+                                value={plan?.location?.long || center[0]}
+                                id="plan-longitude"
+                                name="longitude"
+                                type="number"
+                                readOnly={true}
+                            />
+                        </InputGroup>
+                        <InputGroup>
+                            <label htmlFor="plan-latitude">Latitude</label>
+                            <input
+                                value={plan?.location?.lat || center[1]}
+                                id="plan-latitude"
+                                name="latitude"
+                                type="number"
+                                readOnly={true}
+                            />
+                        </InputGroup>
+                    </FormRow>
                     <InputGroup>
                         <label htmlFor="plan-location-checkbox">Save location</label>
                         <input
@@ -211,21 +218,21 @@ const PlanForm = ({
                         />
                     </InputGroup>
                 </Stack>
-                <div className="button-row">
+                <ButtonRow>
                     <button
-                        type="submit"
                         className="button"
+                        type="submit"
                     >
                         {submitLabel}
                     </button>
                     <button
                         className="button"
-                        type="button"
                         onClick={onCancel}
+                        type="button"
                     >
                         Cancel
                     </button>
-                </div>
+                </ButtonRow>
             </Stack>
         </form>
     );

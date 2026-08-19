@@ -1,5 +1,5 @@
 import {
-    FormEvent,
+    SubmitEvent,
     useEffect,
     useState
 } from 'react';
@@ -29,7 +29,7 @@ const ManageCategories = () => {
         };
     }, []);
 
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const displayName = formData.get('displayName') as string;
