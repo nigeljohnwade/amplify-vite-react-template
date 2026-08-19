@@ -1,8 +1,8 @@
 import {
     useContext,
-    useEffect
+    useEffect,
+    useState
 } from 'react';
-import { useState } from 'react';
 import { Link } from 'react-router';
 
 import './PlanList.css';
@@ -13,7 +13,7 @@ import { usePlanContext } from 'contexts/planContext';
 import UiContext from 'contexts/UiContext';
 import { InteractionControl } from 'components/atoms/InteractionControl/InteractionControl';
 import { StatusChip } from 'components/atoms/StatusChip/StatusChip';
-import { ButtonRow } from 'components/atoms/ButtonRow/ButtonRow';
+import ButtonRow from 'components/atoms/ButtonRow/ButtonRow';
 import { IconRow } from 'components/atoms/IconRow/IconRow';
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { type Schema } from '../../../amplify/data/resource';
