@@ -4,6 +4,7 @@
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
+    gap: var(--space);
 }
 
 .row > * {
@@ -13,8 +14,4 @@
 
 .row + .row {
     margin-top: var(--space)
-}
-
-.row > * + * {
-    margin-left: var(--space);
 }
