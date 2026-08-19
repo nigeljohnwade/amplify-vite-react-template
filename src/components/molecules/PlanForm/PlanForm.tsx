@@ -1,4 +1,7 @@
-import { SubmitEvent } from 'react';
+import {
+    SubmitEvent,
+    useState
+} from 'react';
 
 import type { Schema } from '../../../../amplify/data/resource';
 import { client } from 'amplify/client';
@@ -10,6 +13,8 @@ import {
 } from 'contexts/planContext';
 import FormRow from 'components/atoms/FormRow/FormRow';
 import ButtonRow from 'components/atoms/ButtonRow/ButtonRow';
+import Markdown from 'react-markdown';
+import Row from 'components/atoms/Row/Row';
 
 export type PlanInput = {
     content: string;
@@ -41,6 +46,7 @@ const PlanForm = ({
 }) => {
     const {categories} = usePlanContext();
     const prioritiesEnum = client.enums.PlanPriority.values();
+    const [contentPreview, setContentPreview] = useState(plan?.content);
 
     const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -85,14 +91,23 @@ const PlanForm = ({
                             required
                         />
                     </InputGroup>
-                    <InputGroup>
-                        <label htmlFor="plan-content">Content</label>
-                        <textarea
-                            defaultValue={plan?.content || ''}
-                            id="plan-content"
-                            name="content"
-                        />
-                    </InputGroup>
+                    <Row>
+                        <InputGroup>
+                            <label htmlFor="plan-content">Content</label>
+                            <textarea
+                                defaultValue={plan?.content || ''}
+                                id="plan-content"
+                                name="content"
+                                onChange={(event) => setContentPreview(event.target.value)}
+                            />
+                        </InputGroup>
+                        <div>
+                            {
+                                contentPreview &&
+                                <Markdown>{contentPreview}</Markdown>
+                            }
+                        </div>
+                    </Row>
                     <FormRow>
                         <InputGroup>
                             <label htmlFor="plan-category">Category</label>

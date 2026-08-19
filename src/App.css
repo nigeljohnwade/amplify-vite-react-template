@@ -83,29 +83,6 @@ body {
     width: 100%;
 }
 
-/* Row classes, based on stack but horizontal rather than vertical */
-
-.row {
-    --space: 1.5rem;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-}
-
-.row > * {
-    flex-grow: 0;
-    flex-shrink: 0;
-}
-
-.row + .row {
-    margin-top: var(--spacer)
-}
-
-.row > * + * {
-    margin-left: var(--space);
-}
-
 /* Layout utilities */
 
 .flex-filler {

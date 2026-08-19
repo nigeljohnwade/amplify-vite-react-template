@@ -1,0 +1,20 @@
+.row {
+    --space: 1.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.row > * {
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.row + .row {
+    margin-top: var(--space)
+}
+
+.row > * + * {
+    margin-left: var(--space);
+}
