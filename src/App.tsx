@@ -28,6 +28,7 @@ import Stack from 'components/atoms/Stack/Stack';
 import { InteractionControl } from 'components/atoms/InteractionControl/InteractionControl';
 import UiContext from 'contexts/UiContext.ts';
 import Header from 'components/organisms/Header/Header';
+import MapWrapper from 'components/atoms/MapWrapper/MapWrapper';
 
 function App() {
     const [plans, setPlans] = useState<Plan[]>([]);
@@ -124,7 +125,7 @@ function App() {
                 <main className="main">
                     <Stack spacing="components">
                         <Outlet context={context}/>
-                        <div className="map-wrapper">
+                        <MapWrapper>
                             <div
                                 id="map-container"
                                 ref={mapContainerRef}
@@ -138,7 +139,7 @@ function App() {
                             >
                                 Center map
                             </InteractionControl>
-                        </div>
+                        </MapWrapper>
                     </Stack>
                 </main>
             </Stack>
