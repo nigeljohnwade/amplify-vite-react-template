@@ -1,12 +1,26 @@
 ul.key-value-list {
+    display: flex;
+    flex-direction: column;
     list-style-type: none;
     padding-left: 0;
+    margin-top: 0;
+    gap: 0.5rem;
+    width: 100%;
 
-    & span {
-        display: inline-block;
+    & li {
+        display: flex;
 
-        &.key {
-            width: 10em;
+        & span {
+            display: inline-block;
+
+            &.key {
+                width: 10em;
+            }
+
+            &.value {
+                flex-grow: 1;
+                text-align: right;
+            }
         }
     }
 }

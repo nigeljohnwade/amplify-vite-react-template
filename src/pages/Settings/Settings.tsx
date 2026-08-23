@@ -7,6 +7,7 @@ import { useAuthenticator } from '@aws-amplify/ui-react';
 import { Schema } from '../../../amplify/data/resource';
 
 import './Settings.css';
+import Stack from 'components/atoms/Stack/Stack';
 
 const Settings = () => {
     const [settings, setSettings] = useState<Schema['Setting']['type'] | null>(null);
@@ -17,7 +18,7 @@ const Settings = () => {
     });
 
     return (
-        <div>
+        <Stack spacing="content">
             <h2>Settings</h2>
             {
                 settings &&
@@ -40,7 +41,7 @@ const Settings = () => {
                     </li>
                 </ul>
             }
-        </div>
+        </Stack>
     );
 };
 export default Settings;
