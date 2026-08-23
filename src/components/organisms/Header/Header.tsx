@@ -25,6 +25,12 @@ const Header = () => {
                 >
                     Manage categories
                 </Link>
+                <Link
+                    className="button"
+                    to="/settings"
+                >
+                    Settings
+                </Link>
                 <InteractionControl
                     onClick={signOut}
                 >

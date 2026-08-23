@@ -15,6 +15,7 @@ import CreatePlan from 'pages/CreatePlan/CreatePlan';
 import UpdatePlan from 'pages/UpdatePlan/UpdatePlan';
 import ManageCategories from 'pages/ManageCategories/ManageCategories';
 import { ViewPlan } from './pages/ViewPlan/ViewPlan.tsx';
+import Settings from 'pages/Settings/Settings';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
@@ -44,6 +45,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                         <Route
                             path="manage-categories"
                             element={<ManageCategories/>}
+                        />
+                        <Route
+                            path="settings"
+                            element={<Settings/>}
                         />
                     </Route>
                 </Routes>
