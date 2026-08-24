@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 
 import './Stack.css';
 
@@ -6,7 +6,7 @@ const Stack = ({
     children,
     spacing = 'content',
 }: {
-    children: ReactElement | ReactElement[],
+    children: ReactNode | ReactNode[],
     spacing?: 'content' | 'containers' | 'components',
 }) => {
     return (
