@@ -3,6 +3,8 @@ import {
     ReactNode
 } from 'react';
 
+import './StatusChip.css';
+
 interface StatusChipProps {
     children: ReactNode | ReactNode[];
 }
@@ -11,13 +13,7 @@ export const StatusChip: FC<StatusChipProps> = ({
     children,
 }) => {
     return (
-        <div
-            style={{
-                padding: '0.25rem 1rem',
-                backgroundColor: 'grey',
-                color: 'white',
-            }}
-        >
+        <div className="status-chip">
             <span>{children}</span>
         </div>
     );
