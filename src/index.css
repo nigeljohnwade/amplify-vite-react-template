@@ -1,0 +1,77 @@
+/* Base reset */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    min-width: 0;
+    min-height: 0;
+}
+
+ul, ol {
+    padding-left: var(--content);
+}
+
+label {
+    display: block;
+}
+
+body, input, button, select, textarea {
+    /*font-family: "tiny-hands";*/
+    font-family: sans-serif;
+    font-size: 1rem;
+}
+
+h1 {
+    font-size: 1.618rem;
+}
+
+h2,
+h3,
+h4,
+h5 {
+    font-size: 1.214rem;
+}
+
+button {
+    cursor: pointer;
+}
+
+/* Custom properties */
+
+:root {
+    font-size: 16px;
+    --spacer: 1rem;
+    --light-paper: hsl(0, 0.5%, 95%);
+    --light-ink: hsl(215, 100%, 15%);
+    --light-button-background-color: hsl(240, 80%, 70%);
+    --light-button-color: hsl(0, 0.5%, 95%);
+    --containers: 2rem;
+    --components: 1.5rem;
+    --content: 1rem;
+}
+
+/* Application specific */
+
+body {
+    background-color: var(--light-paper);
+    color: var(--light-ink);
+}
+
+#root {
+    width: 100%;
+    max-width: 63em;
+    margin: var(--containers) auto;
+}
+
+#root > * {
+    padding: 0 var(--components);
+}
+
+.main {
+    width: 100%;
+}
+
+select[name="priority"] {
+    text-transform: capitalize;
+}

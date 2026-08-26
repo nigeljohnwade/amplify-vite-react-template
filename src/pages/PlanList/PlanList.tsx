@@ -33,7 +33,10 @@ const PlanList = () => {
         if (settings && settings.planView) {
             setPlanView(settings.planView);
         }
-    }, [settings]);
+    }, [
+        setPlanView,
+        settings,
+    ]);
 
     useEffect(() => {
         if (settings) {
@@ -41,7 +44,11 @@ const PlanList = () => {
         } else {
             client.models.Setting.create({id: user.userId, planView: planView});
         }
-    }, [planView]);
+    }, [
+        planView,
+        settings,
+        user.userId,
+    ]);
 
     useEffect(() => {
         flyTo(INITIAL_CENTER);

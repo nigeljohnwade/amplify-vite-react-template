@@ -9,39 +9,44 @@ import {
 
 import './index.css';
 
-import App from './App';
+import PlanManagementWrapper from 'PlanManagementWrapper';
 import PlanList from 'pages/PlanList/PlanList';
 import CreatePlan from 'pages/CreatePlan/CreatePlan';
 import UpdatePlan from 'pages/UpdatePlan/UpdatePlan';
 import ManageCategories from 'pages/ManageCategories/ManageCategories';
 import { ViewPlan } from './pages/ViewPlan/ViewPlan.tsx';
 import Settings from 'pages/Settings/Settings';
+import Stack from 'components/atoms/Stack/Stack';
+import Header from 'components/organisms/Header/Header';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <Authenticator>
             <BrowserRouter>
-                <Routes>
-                    <Route
-                        path="/"
-                        element={<App/>}
-                    >
+                <Stack spacing="containers">
+                    <Header/>
+                    <Routes>
                         <Route
-                            index
-                            element={<PlanList/>}
-                        />
-                        <Route
-                            path="create"
-                            element={<CreatePlan/>}
-                        />
-                        <Route
-                            path="update/:id"
-                            element={<UpdatePlan/>}
-                        />
-                        <Route
-                            path="view/:id"
-                            element={<ViewPlan/>}
-                        />
+                            path="/"
+                            element={<PlanManagementWrapper/>}
+                        >
+                            <Route
+                                index
+                                element={<PlanList/>}
+                            />
+                            <Route
+                                path="create"
+                                element={<CreatePlan/>}
+                            />
+                            <Route
+                                path="update/:id"
+                                element={<UpdatePlan/>}
+                            />
+                            <Route
+                                path="view/:id"
+                                element={<ViewPlan/>}
+                            />
+                        </Route>
                         <Route
                             path="manage-categories"
                             element={<ManageCategories/>}
@@ -50,8 +55,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                             path="settings"
                             element={<Settings/>}
                         />
-                    </Route>
-                </Routes>
+                    </Routes>
+                </Stack>
             </BrowserRouter>
         </Authenticator>
     </React.StrictMode>

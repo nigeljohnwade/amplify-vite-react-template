@@ -27,10 +27,9 @@ import type {
 import Stack from 'components/atoms/Stack/Stack';
 import { InteractionControl } from 'components/atoms/InteractionControl/InteractionControl';
 import UiContext from 'contexts/UiContext.ts';
-import Header from 'components/organisms/Header/Header';
 import MapWrapper from 'components/atoms/MapWrapper/MapWrapper';
 
-function App() {
+function PlanManagementWrapper() {
     const [plans, setPlans] = useState<Plan[]>([]);
     const [planView, setPlanView] = useState<'list' | 'tile'>(DEFAULT_LIST_VIEW);
     const [categories, setCategories] = useState<Array<Schema['Category']['type']>>([]);
@@ -120,31 +119,28 @@ function App() {
                 setPlanView: setPlanView,
             }}
         >
-            <Stack spacing="containers">
-                <Header/>
-                <main className="main">
-                    <Stack spacing="components">
-                        <Outlet context={context}/>
-                        <MapWrapper>
-                            <div
-                                id="map-container"
-                                ref={mapContainerRef}
-                            />
-                            {
-                                isCreating &&
-                                <div className="map-center"></div>
-                            }
-                            <InteractionControl
-                                onClick={() => flyTo(INITIAL_CENTER, INITIAL_ZOOM)}
-                            >
-                                Center map
-                            </InteractionControl>
-                        </MapWrapper>
-                    </Stack>
-                </main>
-            </Stack>
+            <main className="main">
+                <Stack spacing="components">
+                    <Outlet context={context}/>
+                    <MapWrapper>
+                        <div
+                            id="map-container"
+                            ref={mapContainerRef}
+                        />
+                        {
+                            isCreating &&
+                            <div className="map-center"></div>
+                        }
+                        <InteractionControl
+                            onClick={() => flyTo(INITIAL_CENTER, INITIAL_ZOOM)}
+                        >
+                            Center map
+                        </InteractionControl>
+                    </MapWrapper>
+                </Stack>
+            </main>
         </UiContext.Provider>
     );
 }
 
-export default App;
+export default PlanManagementWrapper;
