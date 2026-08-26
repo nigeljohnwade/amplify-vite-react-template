@@ -15,7 +15,7 @@ const Settings = () => {
 
     useEffect(() => {
         client.models.Setting.get({id: user.userId}).then(data => setSettings(data.data));
-    });
+    }, [user.userId]);
 
     return (
         <Stack spacing="content">
