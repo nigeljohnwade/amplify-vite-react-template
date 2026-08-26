@@ -82,14 +82,28 @@ select[name="priority"] {
     border: 1px solid var(--light-ink);
     max-width: 20rem;
     margin: 0 auto;
+    background-color: var(--light-paper);
 
     & .amplify-tabs__list {
         display: flex;
 
         & button {
+            appearance: none;
             flex-basis: 50%;
             padding-top: 1rem;
+            border: none;
             padding-bottom: 1rem;
+
+            &.amplify-tabs__item {
+                background-color: var(--light-button-background-color);
+                color: var(--light-button-color);
+            }
+
+            &.amplify-tabs__item--active {
+                background-color: var(--light-paper);
+                color: var(--light-ink);
+                cursor: auto;
+            }
         }
     }
 
