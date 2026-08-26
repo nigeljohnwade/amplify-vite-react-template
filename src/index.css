@@ -75,3 +75,100 @@ body {
 select[name="priority"] {
     text-transform: capitalize;
 }
+
+/* Amplify auth forms */
+
+.amplify-tabs {
+    border: 1px solid var(--light-ink);
+    max-width: 20rem;
+    margin: 0 auto;
+
+    & .amplify-tabs__list {
+        display: flex;
+
+        & button {
+            flex-basis: 50%;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+    }
+
+    & .amplify-tabs__panel {
+        padding: var(--content);
+
+        & form {
+            & button {
+                appearance: none;
+                border: none;
+                background-color: var(--light-button-background-color);
+                color: var(--light-button-color);
+
+                &[type="submit"] {
+                    padding: 0.25rem 1rem;
+                    width: 100%;
+                }
+            }
+
+            & .amplify-button--link {
+                margin-top: 1rem;
+                appearance: none;
+                border: none;
+                text-decoration: underline;
+                background-color: transparent;
+                color: var(--light-ink);
+                padding: 0;
+            }
+
+            & > .amplify-flex {
+                display: flex;
+                gap: var(--content);
+                padding-top: var(--content);
+            }
+        }
+
+        & .amplify-visually-hidden {
+            display: none;
+        }
+
+        & fieldset {
+            border: none;
+
+            &.amplify-flex,
+            &.amplify-flex > .amplify-flex:not(.amplify-textfield) {
+                display: flex;
+                flex-direction: column;
+                gap: var(--components);
+            }
+        }
+
+        & .amplify-textfield {
+            display: flex;
+            flex-direction: column;
+            gap: calc(var(--content) / 2);
+
+            & input {
+                width: 100%;
+            }
+        }
+
+        & .amplify-passwordfield {
+            & .amplify-field-group--horizontal {
+                display: flex;
+            }
+
+            & button {
+                height: 1.4rem;
+
+                & svg {
+                    height: 1em;
+                    margin-top: 2px;
+                }
+            }
+
+            & .amplify-field-group__field-wrapper--horizontal {
+                flex-basis: calc(100% - 2rem);
+                flex-grow: 1;
+            }
+        }
+    }
+}
