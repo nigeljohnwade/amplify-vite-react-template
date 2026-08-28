@@ -185,4 +185,10 @@ select[name="priority"] {
             }
         }
     }
+
+    & .amplify-button__loader-wrapper {
+        & .amplify-loader {
+            display: none;
+        }
+    }
 }
