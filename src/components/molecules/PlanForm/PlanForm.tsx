@@ -181,7 +181,6 @@ const PlanForm = ({
                         />
                     </InputGroup>
                     <FormRow>
-
                         <InputGroup>
                             <label htmlFor="plan-longitude">Longitude</label>
                             <input

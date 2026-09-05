@@ -35,25 +35,25 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                                 element={<PlanList/>}
                             />
                             <Route
-                                path="create"
+                                path="/create"
                                 element={<CreatePlan/>}
                             />
                             <Route
-                                path="update/:id"
+                                path="/update/:id"
                                 element={<UpdatePlan/>}
                             />
                             <Route
-                                path="view/:id"
+                                path="/view/:id"
                                 element={<ViewPlan/>}
+                            />
+                            <Route
+                                path="/settings"
+                                element={<Settings/>}
                             />
                         </Route>
                         <Route
                             path="manage-categories"
                             element={<ManageCategories/>}
-                        />
-                        <Route
-                            path="settings"
-                            element={<Settings/>}
                         />
                     </Routes>
                 </Stack>

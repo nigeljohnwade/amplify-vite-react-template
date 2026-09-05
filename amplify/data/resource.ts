@@ -7,7 +7,6 @@ import {
 /*== STEP 1 ===============================================================
 The section below originally created a Todo database table with a "content"
 field.
-Try adding a new "isDone" field as a boolean.
 The original authorization specified that any user authenticated via an API
 key can "create", "read","update", and "delete" any "Todo" records.
 This has been changed to restrict actions to the owner.
@@ -44,7 +43,8 @@ const schema = a.schema({
         .model({
             id: a.id().required(),
             theme: a.string(),
-            planView: a.enum(['list', 'tile'])
+            planView: a.enum(['list', 'tile']),
+            defaultMapCenter: a.ref('Location'),
         })
         .authorization(allow => [allow.owner()]),
 });
