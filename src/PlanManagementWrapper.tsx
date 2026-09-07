@@ -6,7 +6,7 @@ import {
 } from 'react';
 import {
     Outlet,
-    useLocation
+    useLocation,
 } from 'react-router';
 import mapboxgl from 'mapbox-gl';
 
@@ -18,7 +18,8 @@ import { client } from 'amplify/client.ts';
 import {
     DEFAULT_LIST_VIEW,
     INITIAL_CENTER,
-    INITIAL_ZOOM
+    INITIAL_ZOOM,
+    DEFAULT_MAPBOX_STYLE,
 } from 'configuration/constants';
 import type {
     Plan,
@@ -28,6 +29,7 @@ import Stack from 'components/atoms/Stack/Stack';
 import { InteractionControl } from 'components/atoms/InteractionControl/InteractionControl';
 import UiContext from 'contexts/UiContext.ts';
 import MapWrapper from 'components/atoms/MapWrapper/MapWrapper';
+import { useAuthenticator } from '@aws-amplify/ui-react';
 
 function PlanManagementWrapper() {
     const [plans, setPlans] = useState<Plan[]>([]);
@@ -38,6 +40,20 @@ function PlanManagementWrapper() {
     const mapContainerRef = useRef<HTMLDivElement | null>(null);
     const {pathname} = useLocation();
     const isCreating = pathname === '/create';
+    const {user} = useAuthenticator();
+    const [settings, setSettings] = useState<Partial<Schema['Setting']['type']> | null>(null);
+
+    useEffect(() => {
+        client.models.Setting.get({id: user.userId}).then(data => {
+            setSettings(data.data);
+            if (data.data?.defaultMapCenter?.long && data.data?.defaultMapCenter?.lat) {
+                setCenter([
+                    data.data.defaultMapCenter.long,
+                    data.data.defaultMapCenter.lat,
+                ]);
+            }
+        });
+    }, [user.userId]);
 
     useEffect(() => {
         const planSubscription = client.models.Plan.observeQuery({
@@ -73,7 +89,7 @@ function PlanManagementWrapper() {
             container: mapContainerRef.current!,
             center: [INITIAL_CENTER[0], INITIAL_CENTER[1]],
             zoom: INITIAL_ZOOM,
-            style: 'mapbox://styles/nigeljohnwade/ck6t9mbdx2osp1in0fnb3xd1c',
+            style: `mapbox://styles/${settings?.mapboxStyle?.username ? settings.mapboxStyle.username : 'nigeljohnwade'}/${settings?.mapboxStyle?.styleId ? settings.mapboxStyle.styleId : DEFAULT_MAPBOX_STYLE}`,
         });
         mapRef.current = map;
         map.on('move', () => {
@@ -91,7 +107,7 @@ function PlanManagementWrapper() {
         return () => {
             map.remove();
         };
-    }, []);
+    }, [settings]);
 
     useEffect(() => {
         plans.forEach(plan => {

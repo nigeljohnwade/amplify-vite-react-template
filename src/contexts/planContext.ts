@@ -22,6 +22,7 @@ export type Plan = {
     time: string
     title: string
 }
+
 export type PlanContext = {
     plans: Plan[]
     categories: Array<Schema['Category']['type']>

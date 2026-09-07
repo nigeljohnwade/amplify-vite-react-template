@@ -16,6 +16,11 @@ const schema = a.schema({
         lat: a.float(),
         long: a.float(),
     }),
+    MapboxStyle: a.customType({
+        styleId: a.string(),
+        name: a.string(),
+        username: a.string(),
+    }),
     Category: a
         .model({
             value: a.string().required(),
@@ -45,6 +50,7 @@ const schema = a.schema({
             theme: a.string(),
             planView: a.enum(['list', 'tile']),
             defaultMapCenter: a.ref('Location'),
+            mapboxStyle: a.ref('MapboxStyle'),
         })
         .authorization(allow => [allow.owner()]),
 });
