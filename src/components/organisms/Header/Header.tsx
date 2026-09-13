@@ -12,7 +12,7 @@ const Header = () => {
             <h1>
                 {user?.signInDetails?.loginId}'s plans
             </h1>
-            <div className="button-row">
+            <nav className="button-row">
                 <Link
                     className="button"
                     to="/"
@@ -27,6 +27,12 @@ const Header = () => {
                 </Link>
                 <Link
                     className="button"
+                    to="/manage-images"
+                >
+                    Manage images
+                </Link>
+                <Link
+                    className="button"
                     to="/settings"
                 >
                     Settings
@@ -36,7 +42,7 @@ const Header = () => {
                 >
                     Sign out
                 </InteractionControl>
-            </div>
+            </nav>
         </header>
     );
 };

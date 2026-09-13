@@ -1,0 +1,25 @@
+.manage-images {
+    & ul {
+        list-style: none;
+        padding-left: 0;
+
+        & li {
+            position: relative;
+
+            & .button-row {
+                position: absolute;
+
+                &:nth-child(2) {
+                    left: var(--content);
+                    top: var(--content);
+                }
+
+                &:nth-child(3) {
+                    right: var(--content);
+                    top: var(--content);
+                }
+            }
+        }
+    }
+
+}

@@ -77,7 +77,7 @@ select[name="priority"] {
 }
 
 /* Amplify auth forms */
-
+/* Restyled */
 .amplify-tabs {
     border: 1px solid var(--light-ink);
     max-width: 20rem;
@@ -193,8 +193,9 @@ select[name="priority"] {
     }
 }
 
+/* AMPLIFY STYLES COPIED FROM NODE MODULES */
 
-.amplify-fileuploader__dropzone {
+.amplify-wrapper .amplify-fileuploader__dropzone {
     background-color: var(--amplify-components-fileuploader-dropzone-background-color);
     border-color: var(--amplify-components-fileuploader-dropzone-border-color);
     border-radius: var(--amplify-components-fileuploader-dropzone-border-radius);
@@ -209,35 +210,35 @@ select[name="priority"] {
     gap: var(--amplify-components-fileuploader-dropzone-gap);
 }
 
-.amplify-fileuploader__dropzone--small {
+.amplify-wrapper .amplify-fileuploader__dropzone--small {
     flex-direction: row;
     justify-content: center;
 }
 
-.amplify-fileuploader__dropzone--active {
+.amplify-wrapper .amplify-fileuploader__dropzone--active {
     border-color: var(--amplify-components-fileuploader-dropzone-active-border-color);
     border-width: var(--amplify-components-fileuploader-dropzone-active-border-width);
     background-color: var(--amplify-components-fileuploader-dropzone-active-background-color);
 }
 
-.amplify-fileuploader__dropzone__icon {
+.amplify-wrapper .amplify-fileuploader__dropzone__icon {
     font-size: var(--amplify-components-fileuploader-dropzone-icon-font-size);
     color: var(--amplify-components-fileuploader-dropzone-icon-color);
 }
 
-.amplify-fileuploader__dropzone__text {
+.amplify-wrapper .amplify-fileuploader__dropzone__text {
     color: var(--amplify-components-fileuploader-dropzone-text-color);
     font-size: var(--amplify-components-fileuploader-dropzone-text-font-size);
     font-weight: var(--amplify-components-fileuploader-dropzone-text-font-weight);
 }
 
-.amplify-fileuploader__file__list {
+.amplify-wrapper .amplify-fileuploader__file__list {
     display: flex;
     flex-direction: var(--amplify-components-fileuploader-filelist-flex-direction);
     gap: var(--amplify-components-fileuploader-filelist-gap);
 }
 
-.amplify-fileuploader__file {
+.amplify-wrapper .amplify-fileuploader__file {
     position: relative;
     border-width: var(--amplify-components-fileuploader-file-border-width);
     border-style: var(--amplify-components-fileuploader-file-border-style);
@@ -250,7 +251,7 @@ select[name="priority"] {
     align-items: var(--amplify-components-fileuploader-file-align-items);
 }
 
-.amplify-fileuploader__file__wrapper {
+.amplify-wrapper .amplify-fileuploader__file__wrapper {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -258,7 +259,7 @@ select[name="priority"] {
     gap: var(--amplify-components-fileuploader-file-gap);
 }
 
-.amplify-fileuploader__file__name {
+.amplify-wrapper .amplify-fileuploader__file__name {
     text-overflow: ellipsis;
     overflow: hidden;
     font-weight: var(--amplify-components-fileuploader-file-name-font-weight);
@@ -266,19 +267,19 @@ select[name="priority"] {
     color: var(--amplify-components-fileuploader-file-name-color);
 }
 
-.amplify-fileuploader__file__size {
+.amplify-wrapper .amplify-fileuploader__file__size {
     font-weight: var(--amplify-components-fileuploader-file-size-font-weight);
     font-size: var(--amplify-components-fileuploader-file-size-font-size);
     color: var(--amplify-components-fileuploader-file-size-color);
 }
 
-.amplify-fileuploader__file__main {
+.amplify-wrapper .amplify-fileuploader__file__main {
     flex: 1;
     white-space: nowrap;
     overflow: hidden;
 }
 
-.amplify-fileuploader__file__image {
+.amplify-wrapper .amplify-fileuploader__file__image {
     position: relative;
     display: flex;
     align-items: center;
@@ -290,20 +291,20 @@ select[name="priority"] {
     color: var(--amplify-components-fileuploader-file-image-color);
 }
 
-.amplify-fileuploader__file__image img {
+.amplify-wrapper .amplify-fileuploader__file__image img {
     max-height: 100%;
 }
 
-.amplify-fileuploader__file__status--error {
+.amplify-wrapper .amplify-fileuploader__file__status--error {
     color: var(--amplify-colors-font-error);
     font-size: var(--amplify-components-fileuploader-file-size-font-size);
 }
 
-.amplify-fileuploader__file__status--success {
+.amplify-wrapper .amplify-fileuploader__file__status--success {
     color: var(--amplify-colors-font-success);
 }
 
-.amplify-fileuploader__loader {
+.amplify-wrapper .amplify-fileuploader__loader {
     stroke-linecap: var(--amplify-components-fileuploader-loader-stroke-linecap);
     stroke: var(--amplify-components-fileuploader-loader-stroke-empty);
     stroke-width: var(--amplify-components-fileuploader-loader-stroke-width);
@@ -1912,12 +1913,12 @@ select[name="priority"] {
     --amplify-transforms-slide-x-large: translateX(2em);
 }
 
-.amplify-text {
+.amplify-wrapper .amplify-text {
     display: block;
     color: var(--amplify-components-text-color);
 }
 
-.amplify-fileuploader__previewer {
+.amplify-wrapper .amplify-fileuploader__previewer {
     display: flex;
     flex-direction: column;
     max-width: var(--amplify-components-fileuploader-previewer-max-width);
@@ -1933,25 +1934,25 @@ select[name="priority"] {
     border-radius: var(--amplify-components-fileuploader-previewer-border-radius);
 }
 
-.amplify-fileuploader__previewer__text {
+.amplify-wrapper .amplify-fileuploader__previewer__text {
     font-weight: var(--amplify-components-fileuploader-previewer-text-font-weight);
     font-size: var(--amplify-components-fileuploader-previewer-text-font-size);
     color: var(--amplify-components-fileuploader-previewer-text-color);
 }
 
-.amplify-fileuploader__previewer__footer {
+.amplify-wrapper .amplify-fileuploader__previewer__footer {
     display: flex;
     flex-direction: row;
     justify-content: var(--amplify-components-fileuploader-previewer-footer-justify-content);
 }
 
-.amplify-fileuploader__previewer__actions {
+.amplify-wrapper .amplify-fileuploader__previewer__actions {
     display: flex;
     flex-direction: row;
     gap: var(--amplify-space-small);
 }
 
-.amplify-visually-hidden {
+.amplify-wrapper .amplify-visually-hidden {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -1964,7 +1965,7 @@ select[name="priority"] {
     border-width: 0;
 }
 
-.amplify-image {
+.amplify-wrapper .amplify-image {
     height: var(--amplify-components-image-height);
     max-width: var(--amplify-components-image-max-width);
     -o-object-fit: var(--amplify-components-image-object-fit);
