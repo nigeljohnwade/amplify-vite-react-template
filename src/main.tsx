@@ -18,7 +18,7 @@ import { ViewPlan } from './pages/ViewPlan/ViewPlan.tsx';
 import Settings from 'pages/Settings/Settings';
 import Stack from 'components/atoms/Stack/Stack';
 import Header from 'components/organisms/Header/Header';
-import ManageImages from 'pages/ManageCategories/ManageImages';
+import ManageImages from 'pages/ManageImages/ManageImages';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>

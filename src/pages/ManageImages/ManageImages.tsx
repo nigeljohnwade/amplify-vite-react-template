@@ -1,4 +1,3 @@
-import './ManageCategories.css';
 import Stack from 'components/atoms/Stack/Stack';
 import {
     FileUploader,
@@ -25,8 +24,7 @@ const ManageImages = () => {
         });
     }, []);
 
-    // @ts-expect-error dunno how to suppress implicit any here
-    const processFile = ({file, key}) => {
+    const processFile = ({file, key}: { file: any, key: string }) => {
         const processedFile = {
             file,
             key,
