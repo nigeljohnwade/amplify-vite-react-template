@@ -28,22 +28,21 @@ const ManageImages = () => {
     }, []);
 
     const processFile = ({file, key}: { file: any, key: string }) => {
-        const processedFile = {
+        return {
             file,
             key,
             metadata: {
                 id: key,
                 userId: user.userId,
+                userName: user.username,
             },
         };
-        return processedFile;
     };
 
     const getFileList = async () => {
         const result = await list({
             path: 'picture-submissions/',
         });
-        console.log(result);
         return result;
     };
 
@@ -73,6 +72,11 @@ const ManageImages = () => {
                     isResumable
                     bucket={'amplifyTeamDrive'}
                     processFile={processFile}
+                    onUploadSuccess={() => {
+                        getFileList().then((fileList) => {
+                            setImages(fileList.items);
+                        });
+                    }}
                 />
                 <ul>
                     {
