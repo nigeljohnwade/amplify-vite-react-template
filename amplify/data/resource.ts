@@ -31,17 +31,18 @@ const schema = a.schema({
         .authorization(allow => allow.authenticated()),
     Plan: a
         .model({
-            categoryId: a.id().required(),
             category: a.belongsTo('Category', 'categoryId'),
+            categoryId: a.id().required(),
             content: a.string(),
+            date: a.date(),
+            imagePaths: a.string().array(),
             isDone: a.boolean(),
             location: a.ref('Location'),
             place: a.string(),
             priority: a.enum(['high', 'medium', 'low']),
             status: a.string(),
-            title: a.string().required(),
-            date: a.date(),
             time: a.time(),
+            title: a.string().required(),
         })
         .authorization(allow => [allow.owner()]),
     Setting: a

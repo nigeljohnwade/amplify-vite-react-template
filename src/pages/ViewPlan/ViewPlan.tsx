@@ -16,6 +16,7 @@ import {
 import Stack from 'components/atoms/Stack/Stack';
 import { Plan } from 'contexts/planContext';
 import { InteractionControl } from 'components/atoms/InteractionControl/InteractionControl';
+import { StorageImage } from '@aws-amplify/ui-react-storage';
 
 export const ViewPlan = () => {
     const navigate = useNavigate();
@@ -57,6 +58,15 @@ export const ViewPlan = () => {
                             <p>{planDetails.location.lat}</p>
                             <p>{planDetails.location.long}</p>
                         </>
+                    }
+                    {
+                        planDetails.imagePaths && planDetails.imagePaths.length > 0 &&
+                        planDetails.imagePaths.map(image => (
+                            <StorageImage
+                                alt={''}
+                                path={image}
+                            />
+                        ))
                     }
                     <div className="button-row">
                         <Link

@@ -11,6 +11,7 @@ export type Plan = {
     content: string
     date: string
     id: string
+    imagePaths?: string[]
     isDone: boolean
     location: {
         lat: number

@@ -63,6 +63,7 @@ function PlanManagementWrapper() {
                 'content',
                 'date',
                 'id',
+                'imagePaths',
                 'isDone',
                 'location.*',
                 'place',

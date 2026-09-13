@@ -4,7 +4,6 @@ import {
     FileUploader,
     StorageImage
 } from '@aws-amplify/ui-react-storage';
-import '@aws-amplify/ui-react/styles.css';
 import {
     list,
     remove
@@ -43,6 +42,7 @@ const ManageImages = () => {
         const result = await list({
             path: 'picture-submissions/',
         });
+        console.log(result);
         return result;
     };
 

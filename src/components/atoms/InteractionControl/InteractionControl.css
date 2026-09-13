@@ -1,4 +1,4 @@
-.button {
+.button, .amplify-button {
     appearance: none;
     border: none;
     background-color: var(--light-button-background-color);

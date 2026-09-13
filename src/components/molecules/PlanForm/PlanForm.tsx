@@ -27,6 +27,7 @@ export type PlanInput = {
     location: { lat: number; long: number } | null;
     status: string | null;
     isDone: boolean;
+    imagePaths?: string[];
 };
 
 const PlanForm = ({
@@ -60,7 +61,6 @@ const PlanForm = ({
         const date = formData.get('date') as string;
         const status = formData.get('status') as string;
         const isDone = formData.get('isDone');
-        console.log(isDone);
         const saveLocation = formData.get('location-checkbox') === 'true';
         onSubmit({
             content,
@@ -73,6 +73,7 @@ const PlanForm = ({
             location: saveLocation ? {lat: center[1], long: center[0]} : null,
             status: status !== '' ? status : null,
             isDone: isDone === 'true' ? true : false,
+            imagePaths: ['picture-submissions/A6700_31122008___-12.jpg']
         });
     };
 

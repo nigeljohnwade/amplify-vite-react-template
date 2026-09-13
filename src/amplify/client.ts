@@ -20,6 +20,7 @@ export const getPlan = async (id: string) => {
                 'content',
                 'date',
                 'id',
+                'imagePaths',
                 'isDone',
                 'location.*',
                 'place',
