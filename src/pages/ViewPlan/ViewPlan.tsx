@@ -59,15 +59,17 @@ export const ViewPlan = () => {
                             <p>{planDetails.location.long}</p>
                         </>
                     }
-                    {
-                        planDetails.imagePaths && planDetails.imagePaths.length > 0 &&
-                        planDetails.imagePaths.map(image => (
-                            <StorageImage
-                                alt={''}
-                                path={image}
-                            />
-                        ))
-                    }
+                    <div className="amplify-wrapper">
+                        {
+                            planDetails.imagePaths && planDetails.imagePaths.length > 0 &&
+                            planDetails.imagePaths.map(image => (
+                                <StorageImage
+                                    alt={''}
+                                    path={image}
+                                />
+                            ))
+                        }
+                    </div>
                     <div className="button-row">
                         <Link
                             className="button"

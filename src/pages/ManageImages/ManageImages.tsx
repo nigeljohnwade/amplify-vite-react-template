@@ -18,7 +18,7 @@ import ButtonRow from 'components/atoms/ButtonRow/ButtonRow';
 import { StatusChip } from 'components/atoms/StatusChip/StatusChip';
 
 const ManageImages = () => {
-    const [images, setImages] = useState<any[]>([]);
+    const [images, setImages] = useState<{ eTag?: string, path: string, size?: number }[]>([]);
     const {user} = useAuthenticator();
 
     useEffect(() => {
@@ -90,7 +90,13 @@ const ManageImages = () => {
                                     <InteractionControl onClick={() => removeImage(image)}>Delete</InteractionControl>
                                 </ButtonRow>
                                 <ButtonRow>
-                                    <StatusChip>{(image.size / 1024 / 1024).toFixed(2)}Mb</StatusChip>
+                                    <StatusChip>
+                                        {
+                                            image?.size
+                                                ? `${(image.size / 1024 / 1024).toFixed(2)}Mb`
+                                                : 'Unknown size'
+                                        }
+                                    </StatusChip>
                                 </ButtonRow>
                             </li>
                         ))

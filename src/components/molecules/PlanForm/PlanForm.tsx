@@ -1,6 +1,7 @@
 import {
     SubmitEvent,
-    useState
+    useState,
+    useEffect
 } from 'react';
 
 import type { Schema } from '../../../../amplify/data/resource';
@@ -15,6 +16,7 @@ import FormRow from 'components/atoms/FormRow/FormRow';
 import ButtonRow from 'components/atoms/ButtonRow/ButtonRow';
 import Markdown from 'react-markdown';
 import Row from 'components/atoms/Row/Row';
+import { list } from 'aws-amplify/storage';
 
 export type PlanInput = {
     content: string;
@@ -48,7 +50,21 @@ const PlanForm = ({
     const {categories} = usePlanContext();
     const prioritiesEnum = client.enums.PlanPriority.values();
     const [contentPreview, setContentPreview] = useState(plan?.content);
+    const [images, setImages] = useState<{ eTag?: string, path: string, size?: number }[]>([]);
 
+    useEffect(() => {
+        getFileList().then((fileList) => {
+            console.log(fileList);
+            setImages(fileList.items);
+        });
+    }, []);
+
+    const getFileList = async () => {
+        const result = await list({
+            path: 'picture-submissions/',
+        });
+        return result;
+    };
     const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
@@ -62,6 +78,7 @@ const PlanForm = ({
         const status = formData.get('status') as string;
         const isDone = formData.get('isDone');
         const saveLocation = formData.get('location-checkbox') === 'true';
+        const imagePaths = formData.getAll('image-paths');
         onSubmit({
             content,
             title,
@@ -73,7 +90,7 @@ const PlanForm = ({
             location: saveLocation ? {lat: center[1], long: center[0]} : null,
             status: status !== '' ? status : null,
             isDone: isDone === 'true' ? true : false,
-            imagePaths: ['picture-submissions/A6700_31122008___-12.jpg']
+            imagePaths: imagePaths as string[],
         });
     };
 
@@ -231,6 +248,26 @@ const PlanForm = ({
                             value="true"
                             defaultChecked={plan?.isDone !== null ? plan?.isDone : false}
                         />
+                    </InputGroup>
+                    <InputGroup>
+                        <label htmlFor="image-paths">Images</label>
+                        <select
+                            id="image-paths"
+                            name="image-paths"
+                            multiple={true}
+                        >
+                            {
+                                images?.map(image => (
+                                    <option
+                                        key={image.path}
+                                        selected={plan?.imagePaths?.includes(image.path)}
+                                        value={image.path}
+                                    >
+                                        {image.path}
+                                    </option>
+                                ))
+                            }
+                        </select>
                     </InputGroup>
                 </Stack>
                 <ButtonRow>
