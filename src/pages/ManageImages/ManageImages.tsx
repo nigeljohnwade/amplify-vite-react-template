@@ -1,8 +1,5 @@
 import Stack from 'components/atoms/Stack/Stack';
-import {
-    FileUploader,
-    StorageImage
-} from '@aws-amplify/ui-react-storage';
+import { StorageImage } from '@aws-amplify/ui-react-storage';
 import {
     list,
     remove
@@ -15,6 +12,7 @@ import { InteractionControl } from 'components/atoms/InteractionControl/Interact
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import './ManageImages.css';
 import ButtonRow from 'components/atoms/ButtonRow/ButtonRow';
+import ImageUpload from 'components/organisms/ImageUpload/ImageUpload';
 import { StatusChip } from 'components/atoms/StatusChip/StatusChip';
 
 const ManageImages = () => {
@@ -41,7 +39,7 @@ const ManageImages = () => {
 
     const getFileList = async () => {
         const result = await list({
-            path: 'picture-submissions/',
+            path: 'picture-submissions/thumbnails/',
         });
         return result;
     };
@@ -63,47 +61,33 @@ const ManageImages = () => {
     };
 
     return (
-        <div className="amplify-wrapper manage-images">
-            <Stack spacing="components">
-                <FileUploader
-                    acceptedFileTypes={['image/*']}
-                    path="picture-submissions/"
-                    maxFileCount={3}
-                    isResumable
-                    bucket={'amplifyTeamDrive'}
-                    processFile={processFile}
-                    onUploadSuccess={() => {
-                        getFileList().then((fileList) => {
-                            setImages(fileList.items);
-                        });
-                    }}
-                />
-                <ul>
-                    {
-                        images.length > 0 && images.map((image) => (
-                            <li key={image.path}>
-                                <StorageImage
-                                    alt={''}
-                                    path={image.path}
-                                />
-                                <ButtonRow>
-                                    <InteractionControl onClick={() => removeImage(image)}>Delete</InteractionControl>
-                                </ButtonRow>
-                                <ButtonRow>
-                                    <StatusChip>
-                                        {
-                                            image?.size
-                                                ? `${(image.size / 1024 / 1024).toFixed(2)}Mb`
-                                                : 'Unknown size'
-                                        }
-                                    </StatusChip>
-                                </ButtonRow>
-                            </li>
-                        ))
-                    }
-                </ul>
-            </Stack>
-        </div>
+        <Stack spacing="components">
+            <ImageUpload
+                onSuccess={() => {
+                    getFileList().then((fileList) => {
+                        setImages(fileList.items);
+                    });
+                }}
+            />
+            <ul className="image-list-thumbnails tile-view">
+                {
+                    images.length > 0 && images.map((image) => (
+                        <li key={image.path}>
+                            <StorageImage
+                                alt={''}
+                                path={image.path}
+                            />
+                            <StatusChip>
+                                {image.path.split('/')[2]}
+                            </StatusChip>
+                            <ButtonRow>
+                                <InteractionControl onClick={() => removeImage(image)}>Delete</InteractionControl>
+                            </ButtonRow>
+                        </li>
+                    ))
+                }
+            </ul>
+        </Stack>
     );
 };
 

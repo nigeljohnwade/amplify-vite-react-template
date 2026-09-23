@@ -62,6 +62,9 @@ const PlanForm = ({
     const getFileList = async () => {
         const result = await list({
             path: 'picture-submissions/',
+            options: {
+                subpathStrategy: {strategy: 'exclude'}
+            }
         });
         return result;
     };
